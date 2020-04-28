@@ -5,7 +5,7 @@ import {createBoardTemplate} from "./components/board.js";
 import {createFilmCard} from "./components/film-card.js";
 import {createLoadBtnTemplate} from "./components/load-btn.js";
 import {createMoviesCountTemplate} from "./components/movies-count.js";
-import {createDetailsPopupTemplate} from "./components/details-popup.js";
+// import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
 
 const SORTING_CARD_COUNT = 5;

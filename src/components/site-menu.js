@@ -1,6 +1,6 @@
 const createFilterMarkup = (name, count) => {
   return (`
-  <a href="#watchlist" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>
+  <a href="#${name}" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>
   `);
 };
 

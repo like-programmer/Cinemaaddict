@@ -1,11 +1,11 @@
-const createFilterMarkup = () => {
+const createFilterMarkup = (name, count) => {
   return (`
-  <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
+  <a href="#watchlist" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>
   `);
 };
 
 export const createSiteMenuTemplate = () => {
-  const filterMarkup = createFilterMarkup();
+  const filterMarkup = createFilterMarkup(`Wishlist`, 34);
   return (`
     <nav class="main-navigation">
     <div class="main-navigation__items">

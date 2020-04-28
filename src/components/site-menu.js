@@ -4,15 +4,14 @@ const createFilterMarkup = (name, count) => {
   `);
 };
 
-export const createSiteMenuTemplate = () => {
-  const filterMarkup = createFilterMarkup(`Wishlist`, 34);
+export const createSiteMenuTemplate = (filters) => {
+  const filterMarkup = filters.map((it) => createFilterMarkup(it.name, it.count)).join(`\n`);
+
   return (`
     <nav class="main-navigation">
     <div class="main-navigation__items">
       <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
       
-      ${filterMarkup}
-      ${filterMarkup}
       ${filterMarkup}
       
     </div>

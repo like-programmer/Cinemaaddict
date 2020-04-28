@@ -55,6 +55,7 @@ body {
 a:link {
   opacity: 1;
   text-decoration: none;
+  text-transform: capitalize;
   transition: opacity 0.1s ease-in;
 }
 

@@ -7,9 +7,13 @@ import {createLoadBtnTemplate} from "./components/load-btn.js";
 import {createMoviesCountTemplate} from "./components/movies-count.js";
 // import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
+import {generateFilters} from "./mock/filter.js";
+
 
 const SORTING_CARD_COUNT = 5;
 const CATEGORY_CARD_COUNT = 2;
+
+const filters = generateFilters();
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -21,7 +25,7 @@ render(siteHeaderElement, createUserRankTemplate(), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);
 
-render(siteMainElement, createSiteMenuTemplate(), `beforeend`);
+render(siteMainElement, createSiteMenuTemplate(filters), `beforeend`);
 
 render(siteMainElement, createSortingTemplate(), `beforeend`);
 

@@ -1,11 +1,13 @@
-const createFilterMarkup = (name, count) => {
+const createFilterMarkup = (filter) => {
+  const {name, count} = filter;
+
   return (`
   <a href="#${name}" class="main-navigation__item">${name} <span class="main-navigation__item-count">${count}</span></a>
   `);
 };
 
 export const createSiteMenuTemplate = (filters) => {
-  const filterMarkup = filters.map((it) => createFilterMarkup(it.name, it.count)).join(`\n`);
+  const filterMarkup = filters.map((it) => createFilterMarkup(it)).join(`\n`);
 
   return (`
     <nav class="main-navigation">

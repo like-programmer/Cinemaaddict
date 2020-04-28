@@ -1,5 +1,6 @@
 import {createUserRankTemplate} from "./components/user-rank.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
+import {createSortingTemplate} from "./components/sorting.js";
 import {createBoardTemplate} from "./components/board.js";
 import {createFilmCard} from "./components/film-card.js";
 import {createLoadBtnTemplate} from "./components/load-btn.js";
@@ -11,35 +12,37 @@ const SORTING_CARD_COUNT = 5;
 const CATEGORY_CARD_COUNT = 2;
 
 const render = (container, template, place) => {
-    container.insertAdjacentHTML(place, template)
+  container.insertAdjacentHTML(place, template);
 };
 
-const siteHeader = document.querySelector(".header");
+const siteHeaderElement = document.querySelector(`.header`);
 
-render(siteHeader, createUserRankTemplate(), `beforeend`);
+render(siteHeaderElement, createUserRankTemplate(), `beforeend`);
 
-const siteMain = document.querySelector(".main");
+const siteMainElement = document.querySelector(`.main`);
 
-render(siteMain, createSiteMenuTemplate(), `beforeend`);
+render(siteMainElement, createSiteMenuTemplate(), `beforeend`);
 
-render(siteMain, createBoardTemplate(), `beforeend`);
+render(siteMainElement, createSortingTemplate(), `beforeend`);
 
-const cardsContainer = siteMain.querySelectorAll(".films-list__container");
+render(siteMainElement, createBoardTemplate(), `beforeend`);
+
+const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
 
 new Array(SORTING_CARD_COUNT).fill(``).forEach(() => {
-    render(cardsContainer[0], createFilmCard(), `beforeend`);
+  render(cardsListElement[0], createFilmCard(), `beforeend`);
 });
 
-render(cardsContainer[0], createLoadBtnTemplate(), `afterend`);
+render(cardsListElement[0], createLoadBtnTemplate(), `afterend`);
 
 new Array(CATEGORY_CARD_COUNT).fill(``).forEach(() => {
-    render(cardsContainer[1], createFilmCard(), `beforeend`);
-    render(cardsContainer[2], createFilmCard(), `beforeend`);
+  render(cardsListElement[1], createFilmCard(), `beforeend`);
+  render(cardsListElement[2], createFilmCard(), `beforeend`);
 });
 
 
-const siteFooter = document.querySelector(".footer");
-const siteFooterStatistics = siteFooter.querySelector(".footer__statistics");
+const siteFooter = document.querySelector(`.footer`);
+const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, createMoviesCountTemplate(), `beforeend`);
-render(siteFooter, createDetailsPopupTemplate(), `beforeend`);
+// render(siteFooter, createDetailsPopupTemplate(), `beforeend`);

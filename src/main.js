@@ -5,15 +5,17 @@ import {createBoardTemplate} from "./components/board.js";
 import {createFilmCard} from "./components/film-card.js";
 import {createLoadBtnTemplate} from "./components/load-btn.js";
 import {createMoviesCountTemplate} from "./components/movies-count.js";
-// import {createDetailsPopupTemplate} from "./components/details-popup.js";
+import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
 import {generateFilters} from "./mock/filter.js";
+import {generateFilmCards} from "./mock/film-card.js";
 
 
-const SORTING_CARD_COUNT = 5;
-const CATEGORY_CARD_COUNT = 2;
+const LIST_CARD_COUNT = 5;
+const EXTRA_CARD_COUNT = 2;
 
 const filters = generateFilters();
+const filmCards = generateFilmCards(LIST_CARD_COUNT);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -33,20 +35,21 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
 
-new Array(SORTING_CARD_COUNT).fill(``).forEach(() => {
-  render(cardsListElement[0], createFilmCard(), `beforeend`);
-});
+for (let i = 0; i < LIST_CARD_COUNT; i++) {
+  render(cardsListElement[0], createFilmCard(filmCards[i]), `beforeend`);
+}
 
 render(cardsListElement[0], createLoadBtnTemplate(), `afterend`);
 
-new Array(CATEGORY_CARD_COUNT).fill(``).forEach(() => {
-  render(cardsListElement[1], createFilmCard(), `beforeend`);
-  render(cardsListElement[2], createFilmCard(), `beforeend`);
-});
+for (let i = 0; i < EXTRA_CARD_COUNT; i++) {
+  render(cardsListElement[1], createFilmCard(filmCards[i]), `beforeend`);
+  render(cardsListElement[2], createFilmCard(filmCards[i]), `beforeend`);
+}
 
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, createMoviesCountTemplate(), `beforeend`);
-// render(siteFooter, createDetailsPopupTemplate(), `beforeend`);
+
+render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);

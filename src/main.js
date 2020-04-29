@@ -1,3 +1,4 @@
+import {createSearchTemplate} from "./components/search.js";
 import {createUserRankTemplate} from "./components/user-rank.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
 import {createSortingTemplate} from "./components/sorting.js";
@@ -23,6 +24,7 @@ const render = (container, template, place) => {
 
 const siteHeaderElement = document.querySelector(`.header`);
 
+render(siteHeaderElement, createSearchTemplate(), `beforeend`);
 render(siteHeaderElement, createUserRankTemplate(), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);

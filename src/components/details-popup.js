@@ -25,10 +25,10 @@ export const createDetailsPopupTemplate = (card) => {
   const watchedControlCheckedAttr = isWatched ? `checked` : ``;
   const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
 
-  // film-details--hidden
+  //
 
   return (`
-    <section class="film-details">
+    <section class="film-details film-details--hidden">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">

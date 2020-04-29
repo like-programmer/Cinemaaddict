@@ -1,3 +1,43 @@
+const createGenresMarkup = () => {
+  return (`
+  <span class="film-details__genre">Horror</span>
+  `);
+};
+
+const createUserRatingMarkup = () => {
+  return (`
+  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
+  <label class="film-details__user-rating-label" for="rating-1">1</label>
+  `);
+};
+
+const createCommentMarkup = () => {
+  return (`
+  <li class="film-details__comment">
+            <span class="film-details__comment-emoji">
+              <img src="./images/emoji/sleeping.png" width="55" height="55" alt="emoji-sleeping">
+            </span>
+            <div>
+              <p class="film-details__comment-text">Booooooooooring</p>
+              <p class="film-details__comment-info">
+                <span class="film-details__comment-author">John Doe</span>
+                <span class="film-details__comment-day">2 days ago</span>
+                <button class="film-details__comment-delete">Delete</button>
+              </p>
+            </div>
+          </li>
+  `);
+};
+
+const createEmojiReactionMarkup = () => {
+  return (`
+  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
+            <label class="film-details__emoji-label" for="emoji-angry">
+              <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
+            </label>
+  `);
+};
+
 export const createDetailsPopupTemplate = (card) => {
   const {} = card;
 
@@ -9,7 +49,7 @@ export const createDetailsPopupTemplate = (card) => {
   const date = `30 March`;
   const year = `1934`;
   const duration = `1h 18m`;
-  const genres = `Drama`;
+  // const genres = `Drama`;
   const director = `Anthony Mann`;
   const writers = `Heinz Herald, Richard Weil`;
   const actors = `Mary Beth Hughes, Richard Weil`;
@@ -25,6 +65,11 @@ export const createDetailsPopupTemplate = (card) => {
   const watchlistControlCheckedAttr = isInWatchlist ? `checked` : ``;
   const watchedControlCheckedAttr = isWatched ? `checked` : ``;
   const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
+
+  const genresMarkup = createGenresMarkup();
+  const userRatingMarkup = createUserRatingMarkup();
+  const commentMarkup = createCommentMarkup();
+  const emojiReactionMarkup = createEmojiReactionMarkup();
 
   // film-details--hidden
 
@@ -83,8 +128,7 @@ export const createDetailsPopupTemplate = (card) => {
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${genres}</span>
-                <span class="film-details__genre">${genres}</span>
+                <span class="film-details__genre">${genresMarkup}</span>
                 </td>
             </tr>
           </table>
@@ -122,33 +166,7 @@ export const createDetailsPopupTemplate = (card) => {
             <p class="film-details__user-rating-feelings">How you feel it?</p>
 
             <div class="film-details__user-rating-score">
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
-              <label class="film-details__user-rating-label" for="rating-1">1</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="2" id="rating-2">
-              <label class="film-details__user-rating-label" for="rating-2">2</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="3" id="rating-3">
-              <label class="film-details__user-rating-label" for="rating-3">3</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="4" id="rating-4">
-              <label class="film-details__user-rating-label" for="rating-4">4</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="5" id="rating-5">
-              <label class="film-details__user-rating-label" for="rating-5">5</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="6" id="rating-6">
-              <label class="film-details__user-rating-label" for="rating-6">6</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="7" id="rating-7">
-              <label class="film-details__user-rating-label" for="rating-7">7</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="8" id="rating-8">
-              <label class="film-details__user-rating-label" for="rating-8">8</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="9" id="rating-9" checked>
-              <label class="film-details__user-rating-label" for="rating-9">9</label>
-
+              ${userRatingMarkup}
             </div>
           </section>
         </div>
@@ -163,58 +181,7 @@ export const createDetailsPopupTemplate = (card) => {
         </h3>
 
         <ul class="film-details__comments-list">
-          <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
-            </span>
-            <div>
-              <p class="film-details__comment-text">Interesting setting and a good cast</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">Tim Macoveev</span>
-                <span class="film-details__comment-day">2019/12/31 23:59</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>
-          <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/sleeping.png" width="55" height="55" alt="emoji-sleeping">
-            </span>
-            <div>
-              <p class="film-details__comment-text">Booooooooooring</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">John Doe</span>
-                <span class="film-details__comment-day">2 days ago</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>
-          <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/puke.png" width="55" height="55" alt="emoji-puke">
-            </span>
-            <div>
-              <p class="film-details__comment-text">Very very old. Meh</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">John Doe</span>
-                <span class="film-details__comment-day">2 days ago</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>
-          <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/angry.png" width="55" height="55" alt="emoji-angry">
-            </span>
-            <div>
-              <p class="film-details__comment-text">Almost two hours? Seriously?</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">John Doe</span>
-                <span class="film-details__comment-day">Today</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>
+         ${commentMarkup}
         </ul>
 
         <div class="film-details__new-comment">
@@ -225,25 +192,7 @@ export const createDetailsPopupTemplate = (card) => {
           </label>
 
           <div class="film-details__emoji-list">
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
-            <label class="film-details__emoji-label" for="emoji-smile">
-              <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
-            <label class="film-details__emoji-label" for="emoji-sleeping">
-              <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
-            <label class="film-details__emoji-label" for="emoji-puke">
-              <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
-            <label class="film-details__emoji-label" for="emoji-angry">
-              <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-            </label>
+${emojiReactionMarkup}
           </div>
         </div>
       </section>

@@ -36,14 +36,14 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
 
 for (let i = 0; i < LIST_CARD_COUNT; i++) {
-  render(cardsListElement[0], createFilmCard(filmCards[i]), `beforeend`);
+  render(cardsListElement[0], createFilmCardTemplate(filmCards[i]), `beforeend`);
 }
 
 render(cardsListElement[0], createLoadBtnTemplate(), `afterend`);
 
 for (let i = 0; i < EXTRA_CARD_COUNT; i++) {
-  render(cardsListElement[1], createFilmCard(filmCards[i]), `beforeend`);
-  render(cardsListElement[2], createFilmCard(filmCards[i]), `beforeend`);
+  render(cardsListElement[1], createFilmCardTemplate(filmCards[i]), `beforeend`);
+  render(cardsListElement[2], createFilmCardTemplate(filmCards[i]), `beforeend`);
 }
 
 

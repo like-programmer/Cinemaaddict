@@ -1,4 +1,4 @@
-export const createFilmCard = (card) => {
+export const createFilmCardTemplate = (card) => {
   const {} = card;
 
   return (`

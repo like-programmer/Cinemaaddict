@@ -1,3 +1,6 @@
+import {MONTH_NAMES} from "../const.js";
+import {setDateFormat} from "../utils.js";
+
 const createGenresMarkup = () => {
   return (`
   <span class="film-details__genre">Horror</span>
@@ -39,11 +42,10 @@ const createEmojiReactionMarkup = () => {
 };
 
 export const createDetailsPopupTemplate = (card) => {
-  const {title, originalTitle, poster, description, rating, userRate, duration, genres, director, writers, actors, country, ageLimit, commentsAmount,
+  const {title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, commentsAmount,
     isInWatchlist, isWatched, isFavourite} = card;
 
-  const date = `30 March`;
-  const year = `1934`;
+  const date = `${setDateFormat(releaseDate.getDate())} ${MONTH_NAMES[releaseDate.getMonth()]} ${releaseDate.getFullYear()}`;
 
   const watchlistControlCheckedAttr = isInWatchlist ? `checked` : ``;
   const watchedControlCheckedAttr = isWatched ? `checked` : ``;
@@ -98,7 +100,7 @@ export const createDetailsPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${date} ${year}</td>
+              <td class="film-details__cell">${date}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

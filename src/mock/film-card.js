@@ -16,9 +16,9 @@ const generateFilmCard = () => {
     ageLimit: 0,
     commentsAmount: 2,
 
-    isInWatchlist: true,
-    isWatched: false,
-    isFavourite: true,
+    isInWatchlist: Math.random() > 0.5,
+    isWatched: Math.random() > 0.5,
+    isFavourite: Math.random() > 0.5,
   };
 };
 

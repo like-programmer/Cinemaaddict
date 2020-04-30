@@ -1,13 +1,12 @@
 export const createFilmCardTemplate = (card) => {
-  const {title, poster, description, rating, duration, genres, commentsAmount,
+  const {title, poster, description, rating, releaseDate, duration, genres, commentsAmount,
     isInWatchlist, isWatched, isFavourite} = card;
 
-  const year = `1934`;
+  const year = `${releaseDate.getFullYear()}`;
 
-  const controlActiveClass = `film-card__controls-item--active`;
-  const watchlistControlActiveClass = isInWatchlist ? controlActiveClass : ``;
-  const watchedControlActiveClass = isWatched ? controlActiveClass : ``;
-  const favouriteControlActiveClass = isFavourite ? controlActiveClass : ``;
+  const watchlistControlActiveClass = isInWatchlist ? `film-card__controls-item--active` : ``;
+  const watchedControlActiveClass = isWatched ? `film-card__controls-item--active` : ``;
+  const favouriteControlActiveClass = isFavourite ? `film-card__controls-item--active` : ``;
 
   return (`
     <article class="film-card">

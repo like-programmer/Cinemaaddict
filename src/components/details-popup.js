@@ -9,11 +9,13 @@ const createGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-const createUserRatingFormMarkup = () => {
+const createUserRatingFormMarkup = (userRate) => {
   const ratingMarkup = [];
   for (let i = 1; i < 10; i++) {
+    const rateNumber = (i === userRate);
+
     ratingMarkup.push(`
-  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}">
+  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${rateNumber ? `checked` : ``}>
   <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
   `);
   }
@@ -52,8 +54,9 @@ const createEmojiReactionMarkup = (reactions) => {
 };
 
 export const createDetailsPopupTemplate = (card) => {
-  const {title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, comments,
-    isInWatchlist, isWatched, isFavourite} = card;
+  const {
+    title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, comments,
+    isInWatchlist, isWatched, isFavourite, isRated} = card;
 
   const date = `${setDateFormat(releaseDate.getDate())} ${MONTH_NAMES[releaseDate.getMonth()]} ${releaseDate.getFullYear()}`;
   const commentsAmount = comments.length;
@@ -63,7 +66,7 @@ export const createDetailsPopupTemplate = (card) => {
   const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
 
   const genresMarkup = createGenresMarkup(genres);
-  const userRatingFormMarkup = createUserRatingFormMarkup();
+  const userRatingFormMarkup = createUserRatingFormMarkup(userRate);
   const commentMarkup = createCommentMarkup(comments);
   const emojiReactionMarkup = createEmojiReactionMarkup(EMOJI_REACTIONS);
 
@@ -92,7 +95,7 @@ export const createDetailsPopupTemplate = (card) => {
 
             <div class="film-details__rating">
               <p class="film-details__total-rating">${rating}</p>
-              <p class="film-details__user-rating">Your rate ${userRate}</p>
+              ${isRated ? `<p class="film-details__user-rating">Your rate ${userRate}</p>` : ``}
             </div>
           </div>
 
@@ -145,6 +148,7 @@ export const createDetailsPopupTemplate = (card) => {
       </section>
     </div>
     
+    ${isWatched ? `
     <div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
@@ -168,6 +172,7 @@ export const createDetailsPopupTemplate = (card) => {
         </div>
       </section>
     </div>
+    ` : ``}
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">

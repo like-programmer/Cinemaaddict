@@ -146,13 +146,16 @@ const generateComments = (count) => {
 };
 
 const generateFilmCard = () => {
+  const isWatched = Math.random() > 0.5;
+  const isRated = isWatched ? Math.random() > 0.5 : null;
+
   return {
     title: getRandomArrayItem(titleItems),
     originalTitle: getRandomArrayItem(titleItems),
     poster: getRandomArrayItem(posterItems),
     description: getRandomString(descriptionItems, ` `),
     rating: getRandomFloatNumber(9),
-    userRate: getRandomFloatNumber(9),
+    userRate: isRated ? getRandomIntegerNumber(1, 9) : null,
     releaseDate: new Date(),
     duration: `1h ${getRandomIntegerNumber(0, 50)}m`,
     genres: getRandomArray(genreItems),
@@ -164,9 +167,9 @@ const generateFilmCard = () => {
     comments: generateComments(getRandomIntegerNumber(0, 4)),
 
     isInWatchlist: Math.random() > 0.5,
-    isWatched: Math.random() > 0.5,
+    isWatched,
     isFavourite: Math.random() > 0.5,
-    isRated: Math.random() > 0.5
+    isRated
   };
 };
 

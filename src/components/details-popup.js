@@ -1,60 +1,71 @@
-import {MONTH_NAMES} from "../const.js";
+import {EMOJI_REACTIONS, MONTH_NAMES} from "../const.js";
 import {setDateFormat} from "../utils.js";
 
-const createGenresMarkup = () => {
-  return (`
-  <span class="film-details__genre">Horror</span>
+const createGenresMarkup = (genres) => {
+  return genres.map((genre) => {
+    return (`
+  <span class="film-details__genre">${genre}</span>
   `);
+  }).join(`\n`);
 };
 
-const createUserRatingMarkup = () => {
-  return (`
-  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
-  <label class="film-details__user-rating-label" for="rating-1">1</label>
+const createUserRatingFormMarkup = () => {
+  const ratingMarkup = [];
+  for (let i = 1; i < 10; i++) {
+    ratingMarkup.push(`
+  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}">
+  <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
   `);
+  }
+  return ratingMarkup.join(`\n`);
 };
 
-const createCommentMarkup = () => {
-  return (`
+const createCommentMarkup = (comments) => {
+  return comments.map((comment) => {
+    return (`
   <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="./images/emoji/sleeping.png" width="55" height="55" alt="emoji-sleeping">
+              <img src="${comment.emoji}" width="55" height="55" alt="emoji-sleeping">
             </span>
             <div>
-              <p class="film-details__comment-text">Booooooooooring</p>
+              <p class="film-details__comment-text">${comment.text}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">John Doe</span>
-                <span class="film-details__comment-day">2 days ago</span>
+                <span class="film-details__comment-author">${comment.name}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>
   `);
+  }).join(`\n`);
 };
 
-const createEmojiReactionMarkup = () => {
-  return (`
-  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
-            <label class="film-details__emoji-label" for="emoji-angry">
-              <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
+const createEmojiReactionMarkup = (reactions) => {
+  return reactions.map((reaction) => {
+    return (`
+  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${reaction.name}" value="${reaction.name}">
+            <label class="film-details__emoji-label" for="emoji-${reaction.name}">
+              <img src="${reaction.src}" width="30" height="30" alt="emoji">
             </label>
   `);
+  }).join(`\n`);
 };
 
 export const createDetailsPopupTemplate = (card) => {
-  const {title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, commentsAmount,
+  const {title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, comments,
     isInWatchlist, isWatched, isFavourite} = card;
 
   const date = `${setDateFormat(releaseDate.getDate())} ${MONTH_NAMES[releaseDate.getMonth()]} ${releaseDate.getFullYear()}`;
+  const commentsAmount = comments.length;
 
   const watchlistControlCheckedAttr = isInWatchlist ? `checked` : ``;
   const watchedControlCheckedAttr = isWatched ? `checked` : ``;
   const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
 
-  const genresMarkup = createGenresMarkup();
-  const userRatingMarkup = createUserRatingMarkup();
-  const commentMarkup = createCommentMarkup();
-  const emojiReactionMarkup = createEmojiReactionMarkup();
+  const genresMarkup = createGenresMarkup(genres);
+  const userRatingFormMarkup = createUserRatingFormMarkup();
+  const commentMarkup = createCommentMarkup(comments);
+  const emojiReactionMarkup = createEmojiReactionMarkup(EMOJI_REACTIONS);
 
   // film-details--hidden
 
@@ -151,7 +162,7 @@ export const createDetailsPopupTemplate = (card) => {
             <p class="film-details__user-rating-feelings">How you feel it?</p>
 
             <div class="film-details__user-rating-score">
-              ${userRatingMarkup}
+              ${userRatingFormMarkup}
             </div>
           </section>
         </div>

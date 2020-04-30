@@ -39,28 +39,11 @@ const createEmojiReactionMarkup = () => {
 };
 
 export const createDetailsPopupTemplate = (card) => {
-  const {} = card;
+  const {title, originalTitle, poster, description, rating, userRate, duration, genres, director, writers, actors, country, ageLimit, commentsAmount,
+    isInWatchlist, isWatched, isFavourite} = card;
 
-  const title = `The Godfather`;
-  const originalTitle = `The Godfather`;
-  const poster = `./images/posters/the-man-with-the-golden-arm.jpg`;
-  const rating = `8.1`;
-  const userRate = `7.6`;
   const date = `30 March`;
   const year = `1934`;
-  const duration = `1h 18m`;
-  // const genres = `Drama`;
-  const director = `Anthony Mann`;
-  const writers = `Heinz Herald, Richard Weil`;
-  const actors = `Mary Beth Hughes, Richard Weil`;
-  const country = `USA`;
-  const age = 0;
-  const descriprion = `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback.`;
-  const commentsAmount = 2;
-
-  const isInWatchlist = true;
-  const isWatched = false;
-  const isFavourite = true;
 
   const watchlistControlCheckedAttr = isInWatchlist ? `checked` : ``;
   const watchedControlCheckedAttr = isWatched ? `checked` : ``;
@@ -84,7 +67,7 @@ export const createDetailsPopupTemplate = (card) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${poster}" alt="">
 
-          <p class="film-details__age">${age}+</p>
+          <p class="film-details__age">${ageLimit}+</p>
         </div>
 
         <div class="film-details__info">
@@ -133,7 +116,7 @@ export const createDetailsPopupTemplate = (card) => {
             </tr>
           </table>
 
-          <p class="film-details__film-description">${descriprion}</p>
+          <p class="film-details__film-description">${description}</p>
         </div>
       </div>
 

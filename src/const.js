@@ -1,3 +1,5 @@
+export const RATING_NUMBER_AMOUNT = 9;
+
 export const EMOJI_REACTIONS = [
   {
     name: `smile`,

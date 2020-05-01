@@ -113,32 +113,27 @@ const getRandomArrayItem = (array) => {
 
 const getRandomArray = (array) => {
   const itemsCount = getRandomIntegerNumber(1, 3);
-  const createdArray = [];
-  for (let i = 0; i < itemsCount; i++) {
-    createdArray.push(getRandomArrayItem(array));
-  }
-  return createdArray;
+  return new Array(itemsCount).fill(``).map(() => {
+    return getRandomArrayItem(array);
+  });
 };
 
 const getRandomString = (array, divider) => {
   const itemsCount = getRandomIntegerNumber(1, 3);
-  const createdArray = [];
-  for (let i = 0; i < itemsCount; i++) {
-    createdArray.push(getRandomArrayItem(array));
-  }
-  return createdArray.map((it) => {
-    return (`${it}`);
+  return new Array(itemsCount).fill(``).map(() => {
+    return getRandomArrayItem(array);
   }).join(divider);
 };
 
 const getRandomComment = () => {
-  const comment = {};
-  comment.name = getRandomArrayItem(nameItems);
-  comment.text = getRandomArrayItem(commentTexts);
-  comment.emoji = getRandomArrayItem(EMOJI_REACTIONS).src;
   const day = getRandomIntegerNumber(0, 2);
-  comment.date = commentDayMark[day];
-  return comment;
+
+  return {
+    name: getRandomArrayItem(nameItems),
+    text: getRandomArrayItem(commentTexts),
+    emoji: getRandomArrayItem(EMOJI_REACTIONS).src,
+    date: commentDayMark[day]
+  };
 };
 
 const generateComments = (count) => {

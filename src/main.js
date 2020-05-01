@@ -73,4 +73,4 @@ const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, createMoviesCountTemplate(), `beforeend`);
 
-// render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);
+render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);

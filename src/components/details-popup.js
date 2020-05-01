@@ -1,4 +1,4 @@
-import {EMOJI_REACTIONS, MONTH_NAMES} from "../const.js";
+import {RATING_NUMBER_AMOUNT, EMOJI_REACTIONS, MONTH_NAMES} from "../const.js";
 import {setDateFormat} from "../utils.js";
 
 const createGenresMarkup = (genres) => {
@@ -9,17 +9,15 @@ const createGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-const createUserRatingFormMarkup = (userRate) => {
-  const ratingMarkup = [];
-  for (let i = 1; i < 10; i++) {
-    const rateNumber = (i === userRate);
+const createUserRatingFormMarkup = (numberAmount, userRate) => {
+  return new Array(numberAmount).fill(``).map((it, i) => {
+    const isChecked = i === userRate;
 
-    ratingMarkup.push(`
-  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${rateNumber ? `checked` : ``}>
+    return (`
+  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${isChecked ? `checked` : ``}>
   <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
   `);
-  }
-  return ratingMarkup.join(`\n`);
+  }).join(`\n`);
 };
 
 const createCommentMarkup = (comments) => {
@@ -56,7 +54,8 @@ const createEmojiReactionMarkup = (reactions) => {
 export const createDetailsPopupTemplate = (card) => {
   const {
     title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, comments,
-    isInWatchlist, isWatched, isFavourite, isRated} = card;
+    isInWatchlist, isWatched, isFavourite, isRated
+  } = card;
 
   const date = `${setDateFormat(releaseDate.getDate())} ${MONTH_NAMES[releaseDate.getMonth()]} ${releaseDate.getFullYear()}`;
   const commentsAmount = comments.length;
@@ -66,11 +65,11 @@ export const createDetailsPopupTemplate = (card) => {
   const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
 
   const genresMarkup = createGenresMarkup(genres);
-  const userRatingFormMarkup = createUserRatingFormMarkup(userRate);
+  const userRatingFormMarkup = createUserRatingFormMarkup(RATING_NUMBER_AMOUNT, userRate);
   const commentMarkup = createCommentMarkup(comments);
   const emojiReactionMarkup = createEmojiReactionMarkup(EMOJI_REACTIONS);
 
-  // film-details--hidden
+  //  style="display: none;"
 
   return (`
     <section class="film-details">

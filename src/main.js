@@ -12,11 +12,13 @@ import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
 
 
-const LIST_CARD_COUNT = 5;
-const EXTRA_CARD_COUNT = 2;
+const CARD_COUNT = 22;
+const SHOWING_CARD_COUNT_ON_START = 5;
+const SHOWING_CARD_COUNT_BY_BUTTON = 5;
+const SHOWING_EXTRA_CARD_COUNT = 2;
 
 const filters = generateFilters();
-const filmCards = generateFilmCards(LIST_CARD_COUNT);
+const filmCards = generateFilmCards(SHOWING_CARD_COUNT_ON_START);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -37,13 +39,13 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
 
-for (let i = 0; i < LIST_CARD_COUNT; i++) {
+for (let i = 0; i < SHOWING_CARD_COUNT_ON_START; i++) {
   render(cardsListElement[0], createFilmCardTemplate(filmCards[i]), `beforeend`);
 }
 
 render(cardsListElement[0], createLoadBtnTemplate(), `afterend`);
 
-for (let i = 0; i < EXTRA_CARD_COUNT; i++) {
+for (let i = 0; i < SHOWING_EXTRA_CARD_COUNT; i++) {
   render(cardsListElement[1], createFilmCardTemplate(filmCards[i]), `beforeend`);
   render(cardsListElement[2], createFilmCardTemplate(filmCards[i]), `beforeend`);
 }

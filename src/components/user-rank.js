@@ -1,8 +1,8 @@
 import {USER_RANKS} from "../const.js";
 import {getUserRank} from "../utils.js";
 
-export const createUserRankTemplate = (filmsAmount) => {
-  const userRank = getUserRank(USER_RANKS, filmsAmount);
+export const createUserRankTemplate = (filters) => {
+  const userRank = getUserRank(USER_RANKS, filters);
 
   return (`
     <section class="header__profile profile">

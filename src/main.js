@@ -20,8 +20,6 @@ const SHOWING_EXTRA_CARD_COUNT = 2;
 const filmCards = generateFilmCards(CARD_COUNT);
 const filters = generateFilters(filmCards);
 
-const filmsWatchedAmount = filters.filter((filter) => filter.name === `history`).map((filter) => filter.count);
-
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -29,7 +27,8 @@ const render = (container, template, place) => {
 const siteHeaderElement = document.querySelector(`.header`);
 
 render(siteHeaderElement, createSearchTemplate(), `beforeend`);
-render(siteHeaderElement, createUserRankTemplate(filmsWatchedAmount), `beforeend`);
+render(siteHeaderElement, createUserRankTemplate(filters), `beforeend`);
+// render(siteHeaderElement, createUserRankTemplate(filmsWatchedAmount), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);
 

@@ -69,10 +69,10 @@ export const createDetailsPopupTemplate = (card) => {
   const commentMarkup = createCommentMarkup(comments);
   const emojiReactionMarkup = createEmojiReactionMarkup(EMOJI_REACTIONS);
 
-  //  style="display: none;"
+  //
 
   return (`
-    <section class="film-details">
+    <section class="film-details"  style="display: none;">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">

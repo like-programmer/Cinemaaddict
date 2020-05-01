@@ -20,6 +20,8 @@ const SHOWING_EXTRA_CARD_COUNT = 2;
 const filters = generateFilters();
 const filmCards = generateFilmCards(CARD_COUNT);
 
+const filmsWatchedAmount = 3;
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -27,7 +29,7 @@ const render = (container, template, place) => {
 const siteHeaderElement = document.querySelector(`.header`);
 
 render(siteHeaderElement, createSearchTemplate(), `beforeend`);
-render(siteHeaderElement, createUserRankTemplate(), `beforeend`);
+render(siteHeaderElement, createUserRankTemplate(filmsWatchedAmount), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);
 

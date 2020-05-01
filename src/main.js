@@ -73,6 +73,6 @@ for (let i = 0; i < SHOWING_EXTRA_CARD_COUNT; i++) {
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
-render(siteFooterStatistics, createMoviesCountTemplate(), `beforeend`);
+render(siteFooterStatistics, createMoviesCountTemplate(filmCards.length), `beforeend`);
 
 render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);

@@ -39,7 +39,9 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
 
-for (let i = 0; i < SHOWING_CARD_COUNT_ON_START; i++) {
+let showingCardCount = SHOWING_CARD_COUNT_ON_START;
+
+for (let i = 0; i < showingCardCount; i++) {
   render(cardsListElement[0], createFilmCardTemplate(filmCards[i]), `beforeend`);
 }
 
@@ -56,4 +58,4 @@ const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, createMoviesCountTemplate(), `beforeend`);
 
-render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);
+// render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);

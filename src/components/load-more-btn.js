@@ -1,4 +1,4 @@
-export const createLoadBtnTemplate = () => {
+export const createLoadMoreBtnTemplate = () => {
   return (`
     <button class="films-list__show-more">Show more</button>
     `);

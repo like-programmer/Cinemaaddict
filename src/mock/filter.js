@@ -1,10 +1,19 @@
 const filterNames = [`all movies`, `watchlist`, `history`, `favorites`];
 
-export const generateFilters = () => {
+const getFilterNumber = (cards) => {
+  const inWatchlistCount = (cards.filter((card) => card.isInWatchlist === true)).length;
+  const inHistoryCount = (cards.filter((card) => card.isWatched === true)).length;
+  const inFavouriteCount = (cards.filter((card) => card.isFavourite === true)).length;
+  return [null, inWatchlistCount, inHistoryCount, inFavouriteCount];
+};
+
+export const generateFilters = (cards) => {
+  const filterNumbers = getFilterNumber(cards);
+
   return filterNames.map((it, i) => {
     return {
       name: it,
-      count: i === 0 ? null : Math.floor(Math.random() * 10)
+      count: filterNumbers[i]
     };
   });
 };

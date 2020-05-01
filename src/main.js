@@ -17,10 +17,10 @@ const SHOWING_CARD_COUNT_ON_START = 5;
 const SHOWING_CARD_COUNT_BY_BUTTON = 5;
 const SHOWING_EXTRA_CARD_COUNT = 2;
 
-const filters = generateFilters();
 const filmCards = generateFilmCards(CARD_COUNT);
+const filters = generateFilters(filmCards);
 
-const filmsWatchedAmount = 3;
+const filmsWatchedAmount = filters.filter((filter) => filter.name === `history`).map((filter) => filter.count);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);

@@ -1,9 +1,12 @@
+import {CARD_DESCRIPTION_MAX_LENGTH} from "../const.js";
+
 export const createFilmCardTemplate = (card) => {
   const {title, poster, description, rating, releaseDate, duration, genres, comments,
     isInWatchlist, isWatched, isFavourite} = card;
 
   const year = `${releaseDate.getFullYear()}`;
   const commentsAmount = comments.length;
+  const descriptionString = description.length > CARD_DESCRIPTION_MAX_LENGTH ? `${description.slice(0, CARD_DESCRIPTION_MAX_LENGTH - 1)}...` : description;
 
   const watchlistControlActiveClass = isInWatchlist ? `film-card__controls-item--active` : ``;
   const watchedControlActiveClass = isWatched ? `film-card__controls-item--active` : ``;
@@ -19,7 +22,7 @@ export const createFilmCardTemplate = (card) => {
             <span class="film-card__genre">${genres}</span>
           </p>
           <img src="${poster}" alt="" class="film-card__poster">
-          <p class="film-card__description">${description}</p>
+          <p class="film-card__description">${descriptionString}</p>
           <a class="film-card__comments">${commentsAmount} comments</a>
           <form class="film-card__controls">
             <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlistControlActiveClass}">Add to watchlist</button>

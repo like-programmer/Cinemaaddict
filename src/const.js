@@ -16,6 +16,7 @@ export const USER_RANKS = [
 ];
 
 export const RATING_NUMBER_AMOUNT = 9;
+export const CARD_DESCRIPTION_MAX_LENGTH = 140;
 
 export const EMOJI_REACTIONS = [
   {

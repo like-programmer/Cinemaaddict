@@ -12,3 +12,29 @@ export const getUserRank = (rankList, filters) => {
   }
   return rankName;
 };
+
+export const getExtraRatedCards = (cards, cardsCount) => {
+  const sortedCards = cards.slice();
+  sortedCards.sort((a, b) => b.rating > a.rating ? 1 : -1);
+
+  const isAllZero = sortedCards.every((it) => it.rating === 0);
+
+  if (isAllZero) {
+    return null;
+  } else {
+    return sortedCards.slice(0, cardsCount);
+  }
+};
+
+export const getExtraCommentedCards = (cards, cardsCount) => {
+  const sortedCards = cards.slice();
+  sortedCards.sort((a, b) => b.comments.length > a.comments.length ? 1 : -1);
+
+  const isAllZero = sortedCards.every((it) => it.comments.length === 0);
+
+  if (isAllZero) {
+    return null;
+  } else {
+    return sortedCards.slice(0, cardsCount);
+  }
+};

@@ -10,6 +10,8 @@ import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
 import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
+import {getExtraRatedCards} from "./utils.js";
+import {getExtraCommentedCards} from "./utils.js";
 
 
 const CARD_COUNT = 22;
@@ -19,6 +21,8 @@ const SHOWING_EXTRA_CARD_COUNT = 2;
 
 const filmCards = generateFilmCards(CARD_COUNT);
 const filters = generateFilters(filmCards);
+const extraRatedCards = getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
+const extraCommentedCards = getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -28,7 +32,6 @@ const siteHeaderElement = document.querySelector(`.header`);
 
 render(siteHeaderElement, createSearchTemplate(), `beforeend`);
 render(siteHeaderElement, createUserRankTemplate(filters), `beforeend`);
-// render(siteHeaderElement, createUserRankTemplate(filmsWatchedAmount), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);
 
@@ -63,9 +66,16 @@ loadMoreBtn.addEventListener(`click`, () => {
   }
 });
 
-for (let i = 0; i < SHOWING_EXTRA_CARD_COUNT; i++) {
-  render(cardsListElement[1], createFilmCardTemplate(filmCards[i]), `beforeend`);
-  render(cardsListElement[2], createFilmCardTemplate(filmCards[i]), `beforeend`);
+if (extraRatedCards) {
+  extraRatedCards.forEach((card) => render(cardsListElement[1], createFilmCardTemplate(card), `beforeend`));
+} else if (!extraRatedCards) {
+  siteMainElement.querySelector(`.films-list--extra:nth-last-of-type(2)`).remove();
+}
+
+if (extraCommentedCards) {
+  extraCommentedCards.forEach((card) => render(cardsListElement[2], createFilmCardTemplate(card), `beforeend`));
+} else if (!extraCommentedCards) {
+  siteMainElement.querySelector(`.films-list--extra:nth-last-of-type(1)`).remove();
 }
 
 

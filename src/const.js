@@ -11,31 +11,15 @@ export const USER_RANKS = [
   },
   {
     name: `Movie Buff`,
-    minNumber: 21
+    minNumber: 21,
+    maxNumber: Infinity
   }
 ];
 
 export const RATING_NUMBER_AMOUNT = 9;
 export const CARD_DESCRIPTION_MAX_LENGTH = 140;
 
-export const EMOJI_REACTIONS = [
-  {
-    name: `smile`,
-    src: `./images/emoji/smile.png`
-  },
-  {
-    name: `sleeping`,
-    src: `./images/emoji/sleeping.png`
-  },
-  {
-    name: `puke`,
-    src: `./images/emoji/puke.png`
-  },
-  {
-    name: `angry`,
-    src: `./images/emoji/angry.png`
-  },
-];
+export const COMMENT_REACTION = [`smile`, `sleeping`, `puke`, `angry`];
 
 export const MONTH_NAMES = [
   `January`,

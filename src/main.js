@@ -10,8 +10,7 @@ import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
 import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
-import {getExtraRatedCards} from "./utils.js";
-import {getExtraCommentedCards} from "./utils.js";
+import {getExtraRatedCards, getExtraCommentedCards} from "./utils.js";
 
 
 const CARD_COUNT = 22;

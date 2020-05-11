@@ -1,4 +1,4 @@
-import {EMOJI_REACTIONS} from "../const.js";
+import {COMMENT_REACTION} from "../const.js";
 
 const titleItems = [
   `Casablanca`,
@@ -85,19 +85,6 @@ const countryItems = [
 
 const ageLimitItems = [0, 6, 12, 16, 18];
 
-const commentTexts = [
-  `Interesting setting and a good cast`,
-  `Booooooooooring`,
-  `Very very old. Meh`,
-  `Almost two hours? Seriously?`,
-];
-
-const commentDayMark = {
-  [0]: `Today`,
-  [1]: `Yesterday`,
-  [2]: `2 days ago`
-};
-
 const getRandomIntegerNumber = (min, max) => {
   return (min + Math.floor(Math.random() * (max - min)));
 };
@@ -111,6 +98,13 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
+const getRandomString = (array) => {
+  const itemsCount = getRandomIntegerNumber(1, 3);
+  return new Array(itemsCount).fill(``).map(() => {
+    return getRandomArrayItem(array);
+  }).join(` `);
+};
+
 const getRandomArray = (array) => {
   const itemsCount = getRandomIntegerNumber(1, 3);
   return new Array(itemsCount).fill(``).map(() => {
@@ -118,21 +112,20 @@ const getRandomArray = (array) => {
   });
 };
 
-const getRandomString = (array, divider) => {
-  const itemsCount = getRandomIntegerNumber(1, 3);
-  return new Array(itemsCount).fill(``).map(() => {
-    return getRandomArrayItem(array);
-  }).join(divider);
+const getRandomDate = () => {
+  const targetDate = new Date();
+  const diffValue = (-1) * getRandomIntegerNumber(0, 8);
+
+  targetDate.setDate(targetDate.getDate() + diffValue);
+  return targetDate;
 };
 
 const getRandomComment = () => {
-  const day = getRandomIntegerNumber(0, 2);
-
   return {
-    name: getRandomArrayItem(nameItems),
-    text: getRandomArrayItem(commentTexts),
-    emoji: getRandomArrayItem(EMOJI_REACTIONS).src,
-    date: commentDayMark[day]
+    author: getRandomArrayItem(nameItems),
+    comment: getRandomArrayItem(descriptionItems),
+    date: getRandomDate(),
+    emotion: getRandomArrayItem(COMMENT_REACTION),
   };
 };
 
@@ -140,31 +133,40 @@ const generateComments = (count) => {
   return new Array(count).fill(``).map(getRandomComment);
 };
 
+const getPersonalRating = () => {
+  return Math.random() > 0.5 ? getRandomIntegerNumber(1, 9) : null;
+};
+
 const generateFilmCard = () => {
-  const isWatched = Math.random() > 0.5;
-  const isRated = isWatched ? Math.random() > 0.5 : null;
+  const alreadyWatched = Math.random() > 0.5;
+  const personalRating = alreadyWatched ? getPersonalRating() : null;
 
   return {
-    title: getRandomArrayItem(titleItems),
-    originalTitle: getRandomArrayItem(titleItems),
-    poster: getRandomArrayItem(posterItems),
-    description: getRandomString(descriptionItems, ` `),
-    rating: getRandomFloatNumber(9),
-    userRate: isRated ? getRandomIntegerNumber(1, 9) : null,
-    releaseDate: new Date(),
-    duration: `1h ${getRandomIntegerNumber(0, 50)}m`,
-    genres: getRandomArray(genreItems),
-    director: getRandomArrayItem(nameItems),
-    writers: getRandomString(nameItems, `, `),
-    actors: getRandomString(nameItems, `, `),
-    country: getRandomString(countryItems, `, `),
-    ageLimit: getRandomArrayItem(ageLimitItems),
     comments: generateComments(getRandomIntegerNumber(0, 4)),
-
-    isInWatchlist: Math.random() > 0.5,
-    isWatched,
-    isFavourite: Math.random() > 0.5,
-    isRated
+    filmInfo: {
+      title: getRandomArrayItem(titleItems),
+      alternativeTitle: getRandomArrayItem(titleItems),
+      totalRating: getRandomFloatNumber(9),
+      poster: getRandomArrayItem(posterItems),
+      ageRating: getRandomArrayItem(ageLimitItems),
+      director: getRandomArrayItem(nameItems),
+      writers: getRandomArray(nameItems),
+      actors: getRandomArray(nameItems),
+      release: {
+        date: new Date(),
+        releaseCountry: getRandomArray(countryItems)
+      },
+      runtime: getRandomIntegerNumber(30, 120),
+      genre: getRandomArray(genreItems),
+      description: getRandomString(descriptionItems),
+      userDetails: {
+        personalRating,
+        watchlist: Math.random() > 0.5,
+        alreadyWatched,
+        watchingDate: `2019-05-11T16:12:32.554Z`,
+        favourite: Math.random() > 0.5
+      }
+    }
   };
 };
 
@@ -173,3 +175,30 @@ const generateFilmCards = (count) => {
 };
 
 export {generateFilmCard, generateFilmCards};
+
+
+// const isWatched = Math.random() > 0.5;
+// const isRated = isWatched ? Math.random() > 0.5 : null;
+//
+// return {
+//   title: getRandomArrayItem(titleItems),
+//   originalTitle: getRandomArrayItem(titleItems),
+//   poster: getRandomArrayItem(posterItems),
+//   description: getRandomString(descriptionItems, ` `),
+//   rating: getRandomFloatNumber(9),
+//   userRate: isRated ? getRandomIntegerNumber(1, 9) : null,
+//   releaseDate: new Date(),
+//   duration: `1h ${getRandomIntegerNumber(0, 50)}m`,
+//   genres: getRandomArray(genreItems),
+//   director: getRandomArrayItem(nameItems),
+//   writers: getRandomString(nameItems, `, `),
+//   actors: getRandomString(nameItems, `, `),
+//   country: getRandomString(countryItems, `, `),
+//   ageLimit: getRandomArrayItem(ageLimitItems),
+//   comments: generateComments(getRandomIntegerNumber(0, 4)),
+//
+//   isInWatchlist: Math.random() > 0.5,
+//   isWatched,
+//   isFavourite: Math.random() > 0.5,
+//   isRated
+// };

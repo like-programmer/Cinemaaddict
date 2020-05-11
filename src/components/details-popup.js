@@ -1,5 +1,5 @@
-import {RATING_NUMBER_AMOUNT, EMOJI_REACTIONS, MONTH_NAMES} from "../const.js";
-import {setDateFormat} from "../utils.js";
+import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
+import {setDateFormat, setRuntimeFormat} from "../utils.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -11,27 +11,31 @@ const createGenresMarkup = (genres) => {
 
 const createUserRatingFormMarkup = (numberAmount, userRate) => {
   return new Array(numberAmount).fill(``).map((it, i) => {
-    const isChecked = i === userRate;
+    const index = i + 1;
+    const isChecked = index === userRate;
 
     return (`
-  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${isChecked ? `checked` : ``}>
-  <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
+  <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${index}" id="rating-${index}" ${isChecked ? `checked` : ``}>
+  <label class="film-details__user-rating-label" for="rating-${index}">${index}</label>
   `);
   }).join(`\n`);
 };
 
 const createCommentMarkup = (comments) => {
   return comments.map((comment) => {
+    const date = comment.date.toISOString();
+    const formattedDate = `${date.split(`-`)[0]}/${date.split(`-`)[1]}/${date.split(`-`)[2].split(`T`)[0]} ${date.split(`T`)[1].slice(0, 5)}`;
+
     return (`
   <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${comment.emoji}" width="55" height="55" alt="emoji-sleeping">
+              <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-sleeping">
             </span>
             <div>
-              <p class="film-details__comment-text">${comment.text}</p>
+              <p class="film-details__comment-text">${comment.comment}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${comment.name}</span>
-                <span class="film-details__comment-day">${comment.date}</span>
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${formattedDate}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
@@ -43,36 +47,55 @@ const createCommentMarkup = (comments) => {
 const createEmojiReactionMarkup = (reactions) => {
   return reactions.map((reaction) => {
     return (`
-  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${reaction.name}" value="${reaction.name}">
-            <label class="film-details__emoji-label" for="emoji-${reaction.name}">
-              <img src="${reaction.src}" width="30" height="30" alt="emoji">
+  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${reaction}" value="${reaction}">
+            <label class="film-details__emoji-label" for="emoji-${reaction}">
+              <img src="./images/emoji/${reaction}.png" width="30" height="30" alt="emoji">
             </label>
   `);
   }).join(`\n`);
 };
 
 export const createDetailsPopupTemplate = (card) => {
-  const {
-    title, originalTitle, poster, description, rating, userRate, releaseDate, duration, genres, director, writers, actors, country, ageLimit, comments,
-    isInWatchlist, isWatched, isFavourite, isRated
-  } = card;
+  const {comments, filmInfo} = card;
 
-  const date = `${setDateFormat(releaseDate.getDate())} ${MONTH_NAMES[releaseDate.getMonth()]} ${releaseDate.getFullYear()}`;
-  const commentsAmount = comments.length;
+  const title = filmInfo.title;
+  const alternativeTitle = filmInfo.alternativeTitle;
 
-  const watchlistControlCheckedAttr = isInWatchlist ? `checked` : ``;
-  const watchedControlCheckedAttr = isWatched ? `checked` : ``;
-  const favouriteControlCheckedAttr = isFavourite ? `checked` : ``;
+  const rating = filmInfo.totalRating;
+  const poster = filmInfo.poster;
+  const ageRating = filmInfo.ageRating;
+  const director = filmInfo.director;
 
-  const genresMarkup = createGenresMarkup(genres);
-  const userRatingFormMarkup = createUserRatingFormMarkup(RATING_NUMBER_AMOUNT, userRate);
-  const commentMarkup = createCommentMarkup(comments);
-  const emojiReactionMarkup = createEmojiReactionMarkup(EMOJI_REACTIONS);
+  const writers = filmInfo.writers.map((writer) => ` ${writer}`);
+  const actors = filmInfo.actors.map((actor) => ` ${actor}`);
+
+  const release = `${setDateFormat(filmInfo.release.date.getDate())} ${MONTH_NAMES[filmInfo.release.date.getMonth()]} ${filmInfo.release.date.getFullYear()}`;
+
+  const releaseCountry = filmInfo.release.releaseCountry.map((country) => ` ${country}`);
+
+  const runtime = setRuntimeFormat(filmInfo.runtime);
+
+  const genre = filmInfo.genre;
+  const genreNumeralEnding = genre.length > 1 ? `Genres` : `Genre`;
+  const description = filmInfo.description;
+
+  const personalRating = filmInfo.userDetails.personalRating;
+
+  const commentAmount = comments.length;
+  const sortedComments = comments.slice().sort((first, second) => second.date - first.date);
+
+  const watchlistControlCheckedAttr = filmInfo.userDetails.watchlist ? `checked` : ``;
+  const watchedControlCheckedAttr = filmInfo.userDetails.alreadyWatched ? `checked` : ``;
+  const favouriteControlCheckedAttr = filmInfo.userDetails.favourite ? `checked` : ``;
+
+  const genreMarkup = createGenresMarkup(genre);
+  const userRatingFormMarkup = createUserRatingFormMarkup(RATING_NUMBER_AMOUNT, personalRating);
+  const commentMarkup = createCommentMarkup(sortedComments);
+  const emojiReactionMarkup = createEmojiReactionMarkup(COMMENT_REACTION);
 
   //
 
-  return (`
-    <section class="film-details"  style="display: none;">
+  return (`<section class="film-details"  style="display: none;">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -82,19 +105,21 @@ export const createDetailsPopupTemplate = (card) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${poster}" alt="">
 
-          <p class="film-details__age">${ageLimit}+</p>
+          <p class="film-details__age">${ageRating}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
               <h3 class="film-details__title">${title}</h3>
-              <p class="film-details__title-original">Original: ${originalTitle}</p>
+              <p class="film-details__title-original">Original: ${alternativeTitle}</p>
             </div>
 
             <div class="film-details__rating">
               <p class="film-details__total-rating">${rating}</p>
-              ${isRated ? `<p class="film-details__user-rating">Your rate ${userRate}</p>` : ``}
+              ${personalRating ? `
+              <p class="film-details__user-rating">Your rate ${personalRating}</p>
+              ` : ``}
             </div>
           </div>
 
@@ -113,21 +138,19 @@ export const createDetailsPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${date}</td>
+              <td class="film-details__cell">${release}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${duration}</td>
+              <td class="film-details__cell">${runtime}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${country}</td>
+              <td class="film-details__cell">${releaseCountry}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
-              <td class="film-details__cell">
-                <span class="film-details__genre">${genresMarkup}</span>
-                </td>
+              <td class="film-details__term">${genreNumeralEnding}</td>
+              <td class="film-details__cell">${genreMarkup}</td>
             </tr>
           </table>
 
@@ -146,8 +169,7 @@ export const createDetailsPopupTemplate = (card) => {
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
-    
-    ${isWatched ? `
+    ${filmInfo.userDetails.alreadyWatched ? `
     <div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
@@ -164,25 +186,18 @@ export const createDetailsPopupTemplate = (card) => {
 
             <p class="film-details__user-rating-feelings">How you feel it?</p>
 
-            <div class="film-details__user-rating-score">
-              ${userRatingFormMarkup}
-            </div>
+            <div class="film-details__user-rating-score">${userRatingFormMarkup}</div>
           </section>
         </div>
       </section>
     </div>
     ` : ``}
-
+    
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">
-        Comments 
-        <span class="film-details__comments-count">${commentsAmount}</span>
-        </h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentAmount}</span></h3>
 
-        <ul class="film-details__comments-list">
-         ${commentMarkup}
-        </ul>
+        <ul class="film-details__comments-list">${commentMarkup}</ul>
 
         <div class="film-details__new-comment">
           <div for="add-emoji" class="film-details__add-emoji-label"></div>
@@ -191,13 +206,10 @@ export const createDetailsPopupTemplate = (card) => {
             <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
           </label>
 
-          <div class="film-details__emoji-list">
-${emojiReactionMarkup}
-          </div>
+          <div class="film-details__emoji-list">${emojiReactionMarkup}</div>
         </div>
       </section>
     </div>
   </form>
-</section>
-    `);
+</section>`);
 };

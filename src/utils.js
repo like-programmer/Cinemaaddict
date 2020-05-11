@@ -3,7 +3,7 @@ export const setDateFormat = (date) => {
 };
 
 export const getUserRank = (rankList, filters) => {
-  const filmsWatchedAmount = filters.filter((filter) => filter.name === `history`).map((filter) => filter.count);
+  const [filmsWatchedAmount] = filters.filter((filter) => filter.name === `history`).map((filter) => filter.count);
   let rankName = ``;
   for (const rank of rankList) {
     if (filmsWatchedAmount >= rank.minNumber && filmsWatchedAmount <= rank.maxNumber) {
@@ -13,11 +13,17 @@ export const getUserRank = (rankList, filters) => {
   return rankName;
 };
 
+export const setRuntimeFormat = (value) => {
+  const hours = value / 60;
+  const minutes = value % 60;
+  return hours > 1 ? `${parseInt(hours, 10)}h ${minutes}m` : `${minutes}m`;
+};
+
 export const getExtraRatedCards = (cards, cardsCount) => {
   const sortedCards = cards.slice();
-  sortedCards.sort((a, b) => b.rating > a.rating ? 1 : -1);
+  sortedCards.sort((a, b) => b.filmInfo.totalRating > a.filmInfo.totalRating ? 1 : -1);
 
-  const isAllZero = sortedCards.every((it) => it.rating === 0);
+  const isAllZero = sortedCards.every((it) => it.filmInfo.totalRating === 0);
 
   if (isAllZero) {
     return null;

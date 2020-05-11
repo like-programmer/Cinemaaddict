@@ -1,7 +1,7 @@
 import {CARD_DESCRIPTION_MAX_LENGTH} from "../const.js";
-import {setRuntimeFormat} from "../utils.js";
+import {setRuntimeFormat, createElement} from "../utils.js";
 
-export const createFilmCardTemplate = (card) => {
+const createFilmCardTemplate = (card) => {
   const {comments, filmInfo} = card;
   const commentAmount = comments.length;
   const commentsNumeralEnding = commentAmount > 1 ? `comments` : `comment`;
@@ -39,3 +39,26 @@ export const createFilmCardTemplate = (card) => {
           </form>
         </article>`);
 };
+
+export default class FilmCard {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

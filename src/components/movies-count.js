@@ -1,5 +1,28 @@
-export const createMoviesCountTemplate = (filmAmount) => {
-  return (`
-    <p>${filmAmount} movies inside</p>
-    `);
+import {createElement} from "../utils.js";
+
+const createMoviesCountTemplate = (filmAmount) => {
+  return (`<p>${filmAmount} movies inside</p>`);
 };
+
+export default class MoviesCount {
+  constructor(filmAmount) {
+    this._filmAmount = filmAmount;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMoviesCountTemplate(this._filmAmount);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

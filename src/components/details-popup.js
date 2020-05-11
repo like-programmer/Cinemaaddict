@@ -1,5 +1,5 @@
 import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
-import {setDateFormat, setRuntimeFormat} from "../utils.js";
+import {setDateFormat, setRuntimeFormat, createElement} from "../utils.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -55,7 +55,7 @@ const createEmojiReactionMarkup = (reactions) => {
   }).join(`\n`);
 };
 
-export const createDetailsPopupTemplate = (card) => {
+const createDetailsPopupTemplate = (card) => {
   const {comments, filmInfo} = card;
 
   const title = filmInfo.title;
@@ -213,3 +213,26 @@ export const createDetailsPopupTemplate = (card) => {
   </form>
 </section>`);
 };
+
+export default class DetailsPopup {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createDetailsPopupTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

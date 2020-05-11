@@ -1,7 +1,7 @@
 import {createSearchTemplate} from "./components/search.js";
 import {createUserRankTemplate} from "./components/user-rank.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
-import {createSortingTemplate} from "./components/sorting.js";
+import {createSortingTemplate} from "./components/sort.js";
 import {createBoardTemplate} from "./components/board.js";
 import {createFilmCardTemplate} from "./components/film-card.js";
 import {createLoadMoreBtnTemplate} from "./components/load-more-btn.js";
@@ -10,7 +10,7 @@ import {createDetailsPopupTemplate} from "./components/details-popup.js";
 
 import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
-import {getExtraRatedCards, getExtraCommentedCards} from "./utils.js";
+import {getExtraRatedCards, getExtraCommentedCards, RenderPosition, render} from "./utils.js";
 
 
 const CARD_COUNT = 22;
@@ -22,10 +22,6 @@ const filmCards = generateFilmCards(CARD_COUNT);
 const filters = generateFilters(filmCards);
 const extraRatedCards = getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 const extraCommentedCards = getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const siteHeaderElement = document.querySelector(`.header`);
 

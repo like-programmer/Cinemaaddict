@@ -44,3 +44,10 @@ export const getExtraCommentedCards = (cards, cardsCount) => {
     return sortedCards.slice(0, cardsCount);
   }
 };
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};

@@ -175,30 +175,3 @@ const generateFilmCards = (count) => {
 };
 
 export {generateFilmCard, generateFilmCards};
-
-
-// const isWatched = Math.random() > 0.5;
-// const isRated = isWatched ? Math.random() > 0.5 : null;
-//
-// return {
-//   title: getRandomArrayItem(titleItems),
-//   originalTitle: getRandomArrayItem(titleItems),
-//   poster: getRandomArrayItem(posterItems),
-//   description: getRandomString(descriptionItems, ` `),
-//   rating: getRandomFloatNumber(9),
-//   userRate: isRated ? getRandomIntegerNumber(1, 9) : null,
-//   releaseDate: new Date(),
-//   duration: `1h ${getRandomIntegerNumber(0, 50)}m`,
-//   genres: getRandomArray(genreItems),
-//   director: getRandomArrayItem(nameItems),
-//   writers: getRandomString(nameItems, `, `),
-//   actors: getRandomString(nameItems, `, `),
-//   country: getRandomString(countryItems, `, `),
-//   ageLimit: getRandomArrayItem(ageLimitItems),
-//   comments: generateComments(getRandomIntegerNumber(0, 4)),
-//
-//   isInWatchlist: Math.random() > 0.5,
-//   isWatched,
-//   isFavourite: Math.random() > 0.5,
-//   isRated
-// };

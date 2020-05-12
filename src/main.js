@@ -6,6 +6,7 @@ import BoardComponent from "./components/board.js";
 import CardsComponent from "./components/cards.js";
 import FilmCardComponent from "./components/film-card.js";
 import LoadMoreBtnComponent from "./components/load-more-btn.js";
+import NoCardsComponent from "./components/no-cards.js";
 import MoviesCountComponent from "./components/movies-count.js";
 import DetailsPopupComponent from "./components/details-popup.js";
 
@@ -74,6 +75,14 @@ const renderCard = (cardsListElement, card) => {
 const renderBoard = (boardComponent, cards, ratedCards, commentedCards) => {
   const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
   const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
+
+  if (cards.length === 0) {
+    boardSectionElement.querySelector(`h2`).remove();
+    boardExtraSectionElements[0].remove();
+    boardExtraSectionElements[1].remove();
+    render(boardSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
 
   render(boardSectionElement, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
 

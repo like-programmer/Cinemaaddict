@@ -50,7 +50,41 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderBoard = () => {
+const renderBoard = (boardComponent, cards) => {
+  const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
+  const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
+
+  render(boardSectionElement, new CardsComponent(), RenderPosition.BEFOREEND);
+
+  boardExtraSectionElements.forEach((element) => {
+    render(element, new CardsComponent(), RenderPosition.BEFOREEND);
+  });
+
+  const cardsListElements = boardComponent.getElement().querySelectorAll(`.films-list__container`);
+
+  let showingCardCount = SHOWING_CARD_COUNT_ON_START;
+
+  cards.slice(0, showingCardCount).forEach((card) => {
+    renderCard(cardsListElements[0], card);
+  });
+
+  const loadMoreBtnComponent = new LoadMoreBtnComponent();
+  render(boardSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
+
+  loadMoreBtnComponent.getElement().addEventListener(`click`, () => {
+    const prevCardsCount = showingCardCount;
+
+    showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
+
+    cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
+      renderCard(cardsListElements[0], card);
+    });
+
+    if (showingCardCount >= cards.length) {
+      loadMoreBtnComponent.getElement().remove();
+      loadMoreBtnComponent.removeElement();
+    }
+  });
 };
 
 const siteHeaderElement = document.querySelector(`.header`);
@@ -59,10 +93,11 @@ const siteMainElement = document.querySelector(`.main`);
 render(siteHeaderElement, new SearchComponent().getElement(), RenderPosition.BEFOREEND);
 render(siteHeaderElement, new UserRankComponent(filters).getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SiteMenuComponent(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-render(siteMainElement, new BoardComponent().getElement(), RenderPosition.BEFOREEND);
-const cardsListElement = siteMainElement.querySelector(`.films-list__container`);
-renderCard(cardsListElement, filmCards[0]);
+// render(siteMainElement, new BoardComponent().getElement(), RenderPosition.BEFOREEND);
+// const cardsListElement = siteMainElement.querySelector(`.films-list__container`);
+// renderCard(cardsListElement, filmCards[0]);
 
 // render(siteMainElement, createSortingTemplate(), `beforeend`);
 // render(siteMainElement, createBoardTemplate(), `beforeend`);

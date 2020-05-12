@@ -54,10 +54,10 @@ const renderBoard = (boardComponent, cards) => {
   const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
   const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
 
-  render(boardSectionElement, new CardsComponent(), RenderPosition.BEFOREEND);
+  render(boardSectionElement, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
 
   boardExtraSectionElements.forEach((element) => {
-    render(element, new CardsComponent(), RenderPosition.BEFOREEND);
+    render(element, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
   });
 
   const cardsListElements = boardComponent.getElement().querySelectorAll(`.films-list__container`);
@@ -95,53 +95,11 @@ render(siteHeaderElement, new UserRankComponent(filters).getElement(), RenderPos
 render(siteMainElement, new SiteMenuComponent(filters).getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-// render(siteMainElement, new BoardComponent().getElement(), RenderPosition.BEFOREEND);
-// const cardsListElement = siteMainElement.querySelector(`.films-list__container`);
-// renderCard(cardsListElement, filmCards[0]);
+const boardComponent = new BoardComponent();
+render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+renderBoard(boardComponent, filmCards);
 
-// render(siteMainElement, createSortingTemplate(), `beforeend`);
-// render(siteMainElement, createBoardTemplate(), `beforeend`);
-// const cardsListElement = siteMainElement.querySelectorAll(`.films-list__container`);
-//
-// let showingCardCount = SHOWING_CARD_COUNT_ON_START;
-//
-// for (let i = 0; i < showingCardCount; i++) {
-//   render(cardsListElement[0], createFilmCardTemplate(filmCards[i]), `beforeend`);
-// }
-//
-// render(cardsListElement[0], createLoadMoreBtnTemplate(), `afterend`);
-//
-// const loadMoreBtn = siteMainElement.querySelector(`.films-list__show-more`);
-//
-// loadMoreBtn.addEventListener(`click`, () => {
-//   const prevCardCount = showingCardCount;
-//   showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
-//
-//   filmCards.slice(prevCardCount, showingCardCount).forEach((card) => {
-//     render(cardsListElement[0], createFilmCardTemplate(card), `beforeend`);
-//   });
-//
-//   if (showingCardCount >= filmCards.length) {
-//     loadMoreBtn.remove();
-//   }
-// });
-//
-// if (extraRatedCards) {
-//   extraRatedCards.forEach((card) => render(cardsListElement[1], createFilmCardTemplate(card), `beforeend`));
-// } else if (!extraRatedCards) {
-//   siteMainElement.querySelector(`.films-list--extra:nth-last-of-type(2)`).remove();
-// }
-//
-// if (extraCommentedCards) {
-//   extraCommentedCards.forEach((card) => render(cardsListElement[2], createFilmCardTemplate(card), `beforeend`));
-// } else if (!extraCommentedCards) {
-//   siteMainElement.querySelector(`.films-list--extra:nth-last-of-type(1)`).remove();
-// }
-//
-//
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, new MoviesCountComponent(filmCards.length).getElement(), RenderPosition.BEFOREEND);
-
-// render(siteFooter, createDetailsPopupTemplate(filmCards[0]), `beforeend`);

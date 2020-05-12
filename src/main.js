@@ -25,12 +25,21 @@ const extraRatedCards = getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 const extraCommentedCards = getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 
 const renderCard = (cardsListElement, card) => {
-  const filmCardClickHandler = () => {
+  const openDetailsPopup = () => {
     render(document.body, detailsPopupComponent.getElement(), RenderPosition.BEFOREEND);
   };
 
-  const detailsPopupClickHandler = () => {
+  const closeDetailsPopup = () => {
     detailsPopupComponent.getElement().remove();
+  };
+
+  const documentEscKeydownHandler = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      closeDetailsPopup();
+      document.removeEventListener(`keydown`, documentEscKeydownHandler);
+    }
   };
 
   const cardComponent = new FilmCardComponent(card);
@@ -38,14 +47,26 @@ const renderCard = (cardsListElement, card) => {
   const filmPoster = cardComponent.getElement().querySelector(`.film-card__poster`);
   const filmCommentAmount = cardComponent.getElement().querySelector(`.film-card__comments`);
 
-  filmTitle.addEventListener(`click`, filmCardClickHandler);
-  filmPoster.addEventListener(`click`, filmCardClickHandler);
-  filmCommentAmount.addEventListener(`click`, filmCardClickHandler);
+  filmTitle.addEventListener(`click`, () => {
+    openDetailsPopup();
+    document.addEventListener(`keydown`, documentEscKeydownHandler);
+  });
+  filmPoster.addEventListener(`click`, () => {
+    openDetailsPopup();
+    document.addEventListener(`keydown`, documentEscKeydownHandler);
+  });
+  filmCommentAmount.addEventListener(`click`, () => {
+    openDetailsPopup();
+    document.addEventListener(`keydown`, documentEscKeydownHandler);
+  });
 
   const detailsPopupComponent = new DetailsPopupComponent(card);
   const closePopupBtn = detailsPopupComponent.getElement().querySelector(`.film-details__close-btn`);
 
-  closePopupBtn.addEventListener(`click`, detailsPopupClickHandler);
+  closePopupBtn.addEventListener(`click`, () => {
+    closeDetailsPopup();
+    document.removeEventListener(`keydown`, documentEscKeydownHandler);
+  });
 
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };

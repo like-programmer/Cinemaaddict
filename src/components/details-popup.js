@@ -93,9 +93,7 @@ const createDetailsPopupTemplate = (card) => {
   const commentMarkup = createCommentMarkup(sortedComments);
   const emojiReactionMarkup = createEmojiReactionMarkup(COMMENT_REACTION);
 
-  //
-
-  return (`<section class="film-details"  style="display: none;">
+  return (`<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">

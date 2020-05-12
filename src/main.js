@@ -24,9 +24,12 @@ const extraRatedCards = getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 const extraCommentedCards = getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
 
 const renderCard = (cardsListElement, card) => {
-  const filmCardClickHandler = (evt) => {
-    evt.preventDefault();
-    console.log(`this is click!`);
+  const filmCardClickHandler = () => {
+    render(document.body, detailsPopupComponent.getElement(), RenderPosition.BEFOREEND);
+  };
+
+  const detailsPopupClickHandler = () => {
+    detailsPopupComponent.getElement().remove();
   };
 
   const cardComponent = new FilmCardComponent(card);
@@ -40,15 +43,14 @@ const renderCard = (cardsListElement, card) => {
 
   const detailsPopupComponent = new DetailsPopupComponent(card);
   const closePopupBtn = detailsPopupComponent.getElement().querySelector(`.film-details__close-btn`);
-  const popupForm = detailsPopupComponent.getElement().querySelector(`form`);
 
-  closePopupBtn.addEventListener(`click`, filmCardClickHandler);
-  popupForm.addEventListener(`click`, filmCardClickHandler);
+  closePopupBtn.addEventListener(`click`, detailsPopupClickHandler);
 
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderBoard = () => {};
+const renderBoard = () => {
+};
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);

@@ -22,8 +22,10 @@ const SHOWING_EXTRA_CARD_COUNT = 2;
 
 const filmCards = generateFilmCards(CARD_COUNT);
 const filters = generateFilters(filmCards);
-const extraRatedCards = getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
-const extraCommentedCards = getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT);
+const extraCards = [
+  getExtraRatedCards(filmCards, SHOWING_EXTRA_CARD_COUNT),
+  getExtraCommentedCards(filmCards, SHOWING_EXTRA_CARD_COUNT)
+];
 
 const renderCard = (cardsListElement, card) => {
   const openDetailsPopup = () => {
@@ -44,21 +46,17 @@ const renderCard = (cardsListElement, card) => {
   };
 
   const cardComponent = new FilmCardComponent(card);
-  const filmTitle = cardComponent.getElement().querySelector(`.film-card__title`);
-  const filmPoster = cardComponent.getElement().querySelector(`.film-card__poster`);
-  const filmCommentAmount = cardComponent.getElement().querySelector(`.film-card__comments`);
+  const openPopupTriggerElements = [
+    cardComponent.getElement().querySelector(`.film-card__title`),
+    cardComponent.getElement().querySelector(`.film-card__poster`),
+    cardComponent.getElement().querySelector(`.film-card__comments`)
+  ];
 
-  filmTitle.addEventListener(`click`, () => {
-    openDetailsPopup();
-    document.addEventListener(`keydown`, documentEscKeydownHandler);
-  });
-  filmPoster.addEventListener(`click`, () => {
-    openDetailsPopup();
-    document.addEventListener(`keydown`, documentEscKeydownHandler);
-  });
-  filmCommentAmount.addEventListener(`click`, () => {
-    openDetailsPopup();
-    document.addEventListener(`keydown`, documentEscKeydownHandler);
+  openPopupTriggerElements.forEach((element) => {
+    element.addEventListener(`click`, () => {
+      openDetailsPopup();
+      document.addEventListener(`keydown`, documentEscKeydownHandler);
+    });
   });
 
   const detailsPopupComponent = new DetailsPopupComponent(card);
@@ -72,7 +70,7 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderBoard = (boardComponent, cards, ratedCards, commentedCards) => {
+const renderBoard = (boardComponent, cards, extraCardsArray) => {
   const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
   const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
 
@@ -98,17 +96,13 @@ const renderBoard = (boardComponent, cards, ratedCards, commentedCards) => {
     renderCard(cardsListElements[0], card);
   });
 
-  if (ratedCards) {
-    ratedCards.forEach((card) => renderCard(cardsListElements[1], card));
-  } else if (!ratedCards) {
-    boardExtraSectionElements[0].remove();
-  }
-
-  if (commentedCards) {
-    commentedCards.forEach((card) => renderCard(cardsListElements[2], card));
-  } else if (!commentedCards) {
-    boardExtraSectionElements[1].remove();
-  }
+  extraCardsArray.forEach((array, i) => {
+    if (array) {
+      array.forEach((card) => renderCard(cardsListElements[i + 1], card));
+    } else if (!array) {
+      boardExtraSectionElements[i].remove();
+    }
+  });
 
   const loadMoreBtnComponent = new LoadMoreBtnComponent();
   render(boardSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
@@ -139,7 +133,7 @@ render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREE
 
 const boardComponent = new BoardComponent();
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-renderBoard(boardComponent, filmCards, extraRatedCards, extraCommentedCards);
+renderBoard(boardComponent, filmCards, extraCards);
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);

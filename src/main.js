@@ -50,7 +50,7 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderBoard = (boardComponent, cards) => {
+const renderBoard = (boardComponent, cards, ratedCards, commentedCards) => {
   const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
   const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
 
@@ -67,6 +67,18 @@ const renderBoard = (boardComponent, cards) => {
   cards.slice(0, showingCardCount).forEach((card) => {
     renderCard(cardsListElements[0], card);
   });
+
+  if (ratedCards) {
+    ratedCards.forEach((card) => renderCard(cardsListElements[1], card));
+  } else if (!ratedCards) {
+    boardExtraSectionElements[0].remove();
+  }
+
+  if (commentedCards) {
+    commentedCards.forEach((card) => renderCard(cardsListElements[2], card));
+  } else if (!commentedCards) {
+    boardExtraSectionElements[1].remove();
+  }
 
   const loadMoreBtnComponent = new LoadMoreBtnComponent();
   render(boardSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
@@ -97,7 +109,7 @@ render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREE
 
 const boardComponent = new BoardComponent();
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-renderBoard(boardComponent, filmCards);
+renderBoard(boardComponent, filmCards, extraRatedCards, extraCommentedCards);
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);

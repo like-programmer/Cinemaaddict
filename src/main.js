@@ -3,6 +3,7 @@ import UserRankComponent from "./components/user-rank.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import SortComponent from "./components/sort.js";
 import BoardComponent from "./components/board.js";
+import CardsComponent from "./components/cards.js";
 import FilmCardComponent from "./components/film-card.js";
 import LoadMoreBtnComponent from "./components/load-more-btn.js";
 import MoviesCountComponent from "./components/movies-count.js";

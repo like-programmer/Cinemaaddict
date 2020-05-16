@@ -1,6 +1,6 @@
 import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
 import {setDateFormat, setRuntimeFormat} from "../utils.js";
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {

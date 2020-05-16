@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createSearchTemplate = () => {
   return (`<form class="header__search search">

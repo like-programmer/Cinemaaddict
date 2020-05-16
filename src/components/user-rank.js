@@ -1,6 +1,6 @@
 import {USER_RANKS} from "../const.js";
 import {getUserRank} from "../utils.js";
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createUserRankTemplate = (filters) => {
   const userRank = getUserRank(USER_RANKS, filters);

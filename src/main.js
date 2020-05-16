@@ -30,7 +30,7 @@ const extraCards = [
 
 const renderCard = (cardsListElement, card) => {
   const openDetailsPopup = () => {
-    render(document.body, detailsPopupComponent.getElement(), RenderPosition.BEFOREEND);
+    render(document.body, detailsPopupComponent, RenderPosition.BEFOREEND);
   };
 
   const closeDetailsPopup = () => {
@@ -68,7 +68,7 @@ const renderCard = (cardsListElement, card) => {
     document.removeEventListener(`keydown`, documentEscKeydownHandler);
   });
 
-  render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(cardsListElement, cardComponent, RenderPosition.BEFOREEND);
 };
 
 const renderPage = (pageComponent, cards, extraCardsArray) => {
@@ -79,14 +79,14 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
     pageSectionElement.querySelector(`h2`).remove();
     pageExtraSectionElements[0].remove();
     pageExtraSectionElements[1].remove();
-    render(pageSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
+    render(pageSectionElement, new NoCardsComponent(), RenderPosition.BEFOREEND);
     return;
   }
 
-  render(pageSectionElement, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
+  render(pageSectionElement, new CardsComponent(), RenderPosition.BEFOREEND);
 
   pageExtraSectionElements.forEach((element) => {
-    render(element, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
+    render(element, new CardsComponent(), RenderPosition.BEFOREEND);
   });
 
   const cardsListElements = pageComponent.getElement().querySelectorAll(`.films-list__container`);
@@ -106,7 +106,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
   });
 
   const loadMoreBtnComponent = new LoadMoreBtnComponent();
-  render(pageSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
+  render(pageSectionElement, loadMoreBtnComponent, RenderPosition.BEFOREEND);
 
   loadMoreBtnComponent.getElement().addEventListener(`click`, () => {
     const prevCardsCount = showingCardCount;
@@ -126,16 +126,16 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
-render(siteHeaderElement, new SearchComponent().getElement(), RenderPosition.BEFOREEND);
-render(siteHeaderElement, new UserRankComponent(filters).getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SiteMenuComponent(filters).getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new SearchComponent(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserRankComponent(filters), RenderPosition.BEFOREEND);
+render(siteMainElement, new SiteMenuComponent(filters), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortComponent(), RenderPosition.BEFOREEND);
 
 const pageComponent = new PageComponent();
-render(siteMainElement, pageComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, pageComponent, RenderPosition.BEFOREEND);
 renderPage(pageComponent, filmCards, extraCards);
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
-render(siteFooterStatistics, new MoviesCountComponent(filmCards.length).getElement(), RenderPosition.BEFOREEND);
+render(siteFooterStatistics, new MoviesCountComponent(filmCards.length), RenderPosition.BEFOREEND);

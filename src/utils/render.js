@@ -20,3 +20,7 @@ export const render = (container, element, position) => {
       break;
   }
 };
+
+export const remove = (element) => {
+  element.remove();
+};

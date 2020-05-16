@@ -13,7 +13,7 @@ import DetailsPopupComponent from "./components/details-popup.js";
 import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
 import {getExtraRatedCards, getExtraCommentedCards} from "./utils.js";
-import {RenderPosition, render} from "./utils/render.js";
+import {RenderPosition, render, remove} from "./utils/render.js";
 
 
 const CARD_COUNT = 22;
@@ -34,7 +34,7 @@ const renderCard = (cardsListElement, card) => {
   };
 
   const closeDetailsPopup = () => {
-    detailsPopupComponent.getElement().remove();
+    remove(detailsPopupComponent.getElement());
   };
 
   const documentEscKeydownHandler = (evt) => {
@@ -76,9 +76,9 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
   const pageExtraSectionElements = pageComponent.getElement().querySelectorAll(`.films-list--extra`);
 
   if (cards.length === 0) {
-    pageSectionElement.querySelector(`h2`).remove();
-    pageExtraSectionElements[0].remove();
-    pageExtraSectionElements[1].remove();
+    remove(pageSectionElement.querySelector(`h2`));
+    remove(pageExtraSectionElements[0]);
+    remove(pageExtraSectionElements[1]);
     render(pageSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
     return;
   }
@@ -101,7 +101,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
     if (array) {
       array.forEach((card) => renderCard(cardsListElements[i + 1], card));
     } else if (!array) {
-      pageExtraSectionElements[i].remove();
+      remove(pageExtraSectionElements[i]);
     }
   });
 
@@ -118,7 +118,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
     });
 
     if (showingCardCount >= cards.length) {
-      loadMoreBtnComponent.getElement().remove();
+      remove(loadMoreBtnComponent.getElement());
       loadMoreBtnComponent.removeElement();
     }
   });

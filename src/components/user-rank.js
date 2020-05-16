@@ -1,5 +1,6 @@
 import {USER_RANKS} from "../const.js";
-import {getUserRank, createElement} from "../utils.js";
+import {getUserRank} from "../utils.js";
+import AbstractComponent from "./abstract-component";
 
 const createUserRankTemplate = (filters) => {
   const userRank = getUserRank(USER_RANKS, filters);
@@ -10,25 +11,13 @@ const createUserRankTemplate = (filters) => {
   </section>`);
 };
 
-export default class UserRank {
+export default class UserRank extends AbstractComponent {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserRankTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,5 +1,6 @@
 import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
-import {setDateFormat, setRuntimeFormat, createElement} from "../utils.js";
+import {setDateFormat, setRuntimeFormat} from "../utils.js";
+import AbstractComponent from "./abstract-component";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -212,25 +213,13 @@ const createDetailsPopupTemplate = (card) => {
 </section>`);
 };
 
-export default class DetailsPopup {
+export default class DetailsPopup extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createDetailsPopupTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,5 +1,5 @@
 import {CARD_DESCRIPTION_MAX_LENGTH} from "../const.js";
-import {setRuntimeFormat} from "../utils.js";
+import {setRuntimeFormat} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createFilmCardTemplate = (card) => {

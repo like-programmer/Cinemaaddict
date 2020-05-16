@@ -12,7 +12,8 @@ import DetailsPopupComponent from "./components/details-popup.js";
 
 import {generateFilters} from "./mock/filter.js";
 import {generateFilmCards} from "./mock/film-card.js";
-import {getExtraRatedCards, getExtraCommentedCards} from "./utils.js";
+
+import {getExtraRatedCards, getExtraCommentedCards} from "./utils/common.js";
 import {RenderPosition, render, remove} from "./utils/render.js";
 
 

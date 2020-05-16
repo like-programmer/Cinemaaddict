@@ -2,7 +2,7 @@ import SearchComponent from "./components/search.js";
 import UserRankComponent from "./components/user-rank.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import SortComponent from "./components/sort.js";
-import BoardComponent from "./components/board.js";
+import PageComponent from "./components/page.js";
 import CardsComponent from "./components/cards.js";
 import FilmCardComponent from "./components/film-card.js";
 import LoadMoreBtnComponent from "./components/load-more-btn.js";
@@ -70,25 +70,25 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const renderBoard = (boardComponent, cards, extraCardsArray) => {
-  const boardSectionElement = boardComponent.getElement().querySelector(`.films-list`);
-  const boardExtraSectionElements = boardComponent.getElement().querySelectorAll(`.films-list--extra`);
+const renderPage = (pageComponent, cards, extraCardsArray) => {
+  const pageSectionElement = pageComponent.getElement().querySelector(`.films-list`);
+  const pageExtraSectionElements = pageComponent.getElement().querySelectorAll(`.films-list--extra`);
 
   if (cards.length === 0) {
-    boardSectionElement.querySelector(`h2`).remove();
-    boardExtraSectionElements[0].remove();
-    boardExtraSectionElements[1].remove();
-    render(boardSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
+    pageSectionElement.querySelector(`h2`).remove();
+    pageExtraSectionElements[0].remove();
+    pageExtraSectionElements[1].remove();
+    render(pageSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
     return;
   }
 
-  render(boardSectionElement, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
+  render(pageSectionElement, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
 
-  boardExtraSectionElements.forEach((element) => {
+  pageExtraSectionElements.forEach((element) => {
     render(element, new CardsComponent().getElement(), RenderPosition.BEFOREEND);
   });
 
-  const cardsListElements = boardComponent.getElement().querySelectorAll(`.films-list__container`);
+  const cardsListElements = pageComponent.getElement().querySelectorAll(`.films-list__container`);
 
   let showingCardCount = SHOWING_CARD_COUNT_ON_START;
 
@@ -100,12 +100,12 @@ const renderBoard = (boardComponent, cards, extraCardsArray) => {
     if (array) {
       array.forEach((card) => renderCard(cardsListElements[i + 1], card));
     } else if (!array) {
-      boardExtraSectionElements[i].remove();
+      pageExtraSectionElements[i].remove();
     }
   });
 
   const loadMoreBtnComponent = new LoadMoreBtnComponent();
-  render(boardSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
+  render(pageSectionElement, loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
 
   loadMoreBtnComponent.getElement().addEventListener(`click`, () => {
     const prevCardsCount = showingCardCount;
@@ -131,9 +131,9 @@ render(siteHeaderElement, new UserRankComponent(filters).getElement(), RenderPos
 render(siteMainElement, new SiteMenuComponent(filters).getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-const boardComponent = new BoardComponent();
-render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-renderBoard(boardComponent, filmCards, extraCards);
+const pageComponent = new PageComponent();
+render(siteMainElement, pageComponent.getElement(), RenderPosition.BEFOREEND);
+renderPage(pageComponent, filmCards, extraCards);
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);

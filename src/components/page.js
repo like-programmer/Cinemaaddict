@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-const createBoardTemplate = () => {
+const createPageTemplate = () => {
   return (`<section class="films">
            <section class="films-list">
              <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -16,8 +16,8 @@ const createBoardTemplate = () => {
          </section>`);
 };
 
-export default class Board extends AbstractComponent {
+export default class Page extends AbstractComponent {
   getTemplate() {
-    return createBoardTemplate();
+    return createPageTemplate();
   }
 }

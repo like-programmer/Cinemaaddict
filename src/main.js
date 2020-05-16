@@ -34,7 +34,7 @@ const renderCard = (cardsListElement, card) => {
   };
 
   const closeDetailsPopup = () => {
-    remove(detailsPopupComponent.getElement());
+    detailsPopupComponent.getElement().remove();
   };
 
   const documentEscKeydownHandler = (evt) => {
@@ -76,9 +76,9 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
   const pageExtraSectionElements = pageComponent.getElement().querySelectorAll(`.films-list--extra`);
 
   if (cards.length === 0) {
-    remove(pageSectionElement.querySelector(`h2`));
-    remove(pageExtraSectionElements[0]);
-    remove(pageExtraSectionElements[1]);
+    pageSectionElement.querySelector(`h2`).remove();
+    pageExtraSectionElements[0].remove();
+    pageExtraSectionElements[1].remove();
     render(pageSectionElement, new NoCardsComponent().getElement(), RenderPosition.BEFOREEND);
     return;
   }
@@ -101,7 +101,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
     if (array) {
       array.forEach((card) => renderCard(cardsListElements[i + 1], card));
     } else if (!array) {
-      remove(pageExtraSectionElements[i]);
+      pageExtraSectionElements[i].remove();
     }
   });
 
@@ -118,8 +118,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
     });
 
     if (showingCardCount >= cards.length) {
-      remove(loadMoreBtnComponent.getElement());
-      loadMoreBtnComponent.removeElement();
+      remove(loadMoreBtnComponent);
     }
   });
 };

@@ -48,23 +48,13 @@ const renderCard = (cardsListElement, card) => {
   };
 
   const cardComponent = new FilmCardComponent(card);
-  const openPopupTriggerElements = [
-    cardComponent.getElement().querySelector(`.film-card__title`),
-    cardComponent.getElement().querySelector(`.film-card__poster`),
-    cardComponent.getElement().querySelector(`.film-card__comments`)
-  ];
-
-  openPopupTriggerElements.forEach((element) => {
-    element.addEventListener(`click`, () => {
-      openDetailsPopup();
-      document.addEventListener(`keydown`, documentEscKeydownHandler);
-    });
+  cardComponent.setClickHandler(() => {
+    openDetailsPopup();
+    document.addEventListener(`keydown`, documentEscKeydownHandler);
   });
 
   const detailsPopupComponent = new DetailsPopupComponent(card);
-  const closePopupBtn = detailsPopupComponent.getElement().querySelector(`.film-details__close-btn`);
-
-  closePopupBtn.addEventListener(`click`, () => {
+  detailsPopupComponent.setCloseHandler(() => {
     closeDetailsPopup();
     document.removeEventListener(`keydown`, documentEscKeydownHandler);
   });

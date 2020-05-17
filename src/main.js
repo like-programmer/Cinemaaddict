@@ -109,7 +109,7 @@ const renderPage = (pageComponent, cards, extraCardsArray) => {
   const loadMoreBtnComponent = new LoadMoreBtnComponent();
   render(pageSectionElement, loadMoreBtnComponent, RenderPosition.BEFOREEND);
 
-  loadMoreBtnComponent.getElement().addEventListener(`click`, () => {
+  loadMoreBtnComponent.setClickHandler(() => {
     const prevCardsCount = showingCardCount;
 
     showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;

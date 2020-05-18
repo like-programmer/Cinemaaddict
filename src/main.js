@@ -23,13 +23,14 @@ const siteMainElement = document.querySelector(`.main`);
 render(siteHeaderElement, new SearchComponent(), RenderPosition.BEFOREEND);
 render(siteHeaderElement, new UserRankComponent(filters), RenderPosition.BEFOREEND);
 render(siteMainElement, new SiteMenuComponent(filters), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortComponent(), RenderPosition.BEFOREEND);
+
+const sortComponent = new SortComponent();
+render(siteMainElement, sortComponent, RenderPosition.BEFOREEND);
 
 const pageComponent = new PageComponent();
-const pageController = new PageController(pageComponent);
+const pageController = new PageController(pageComponent, sortComponent);
 render(siteMainElement, pageComponent, RenderPosition.BEFOREEND);
 pageController.render(filmCards);
-// renderPage(pageComponent, filmCards, extraCards);
 
 const siteFooter = document.querySelector(`.footer`);
 const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);

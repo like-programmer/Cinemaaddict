@@ -36,7 +36,7 @@ export default class Sort extends AbstractComponent {
       }
       const sortType = evt.target.dataset.sortType;
 
-      if(this._currentSortType === sortType) {
+      if (this._currentSortType === sortType) {
         return;
       }
 

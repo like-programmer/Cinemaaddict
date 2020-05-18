@@ -1,9 +1,10 @@
-import {remove, render, RenderPosition} from "../utils/render.js";
 import FilmCardComponent from "../components/film-card.js";
 import DetailsPopupComponent from "../components/details-popup.js";
 import NoCardsComponent from "../components/no-cards.js";
 import CardsComponent from "../components/cards.js";
 import LoadMoreBtnComponent from "../components/load-more-btn.js";
+
+import {remove, render, RenderPosition} from "../utils/render.js";
 import {getExtraCommentedCards, getExtraRatedCards} from "../utils/common.js";
 
 const SHOWING_CARD_COUNT_ON_START = 5;
@@ -45,8 +46,9 @@ const renderCard = (cardsListElement, card) => {
 };
 
 export default class PageController {
-  constructor(container) {
+  constructor(container, sortComponent) {
     this._container = container;
+    this._sortComponent = sortComponent;
     this._noCardsComponent = new NoCardsComponent();
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
   }
@@ -104,5 +106,7 @@ export default class PageController {
         remove(this._loadMoreBtnComponent);
       }
     });
+
+    this._sortComponent.setSortTypeChangeHandler(() => {});
   }
 }

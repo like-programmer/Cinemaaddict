@@ -18,29 +18,3 @@ export const setRuntimeFormat = (value) => {
   const minutes = value % 60;
   return hours > 1 ? `${parseInt(hours, 10)}h ${minutes}m` : `${minutes}m`;
 };
-
-export const getExtraRatedCards = (cards, cardsCount) => {
-  const sortedCards = cards.slice();
-  sortedCards.sort((a, b) => b.filmInfo.totalRating > a.filmInfo.totalRating ? 1 : -1);
-
-  const isAllZero = sortedCards.every((it) => it.filmInfo.totalRating === 0);
-
-  if (isAllZero) {
-    return null;
-  } else {
-    return sortedCards.slice(0, cardsCount);
-  }
-};
-
-export const getExtraCommentedCards = (cards, cardsCount) => {
-  const sortedCards = cards.slice();
-  sortedCards.sort((a, b) => b.comments.length > a.comments.length ? 1 : -1);
-
-  const isAllZero = sortedCards.every((it) => it.comments.length === 0);
-
-  if (isAllZero) {
-    return null;
-  } else {
-    return sortedCards.slice(0, cardsCount);
-  }
-};

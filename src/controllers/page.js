@@ -6,7 +6,6 @@ import LoadMoreBtnComponent from "../components/load-more-btn.js";
 import {SortType} from "../components/sort.js";
 
 import {remove, render, RenderPosition} from "../utils/render.js";
-import {getExtraCommentedCards, getExtraRatedCards} from "../utils/common.js";
 
 const SHOWING_CARD_COUNT_ON_START = 5;
 const SHOWING_CARD_COUNT_BY_BUTTON = 5;
@@ -63,6 +62,10 @@ const getSortedCards = (cards, sortType, from, to) => {
 
     case SortType.RATING:
       sortedCards = showingCards.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
+      break;
+
+    case `comments`:
+      sortedCards = showingCards.sort((a, b) => b.comments.length - a.comments.length);
       break;
 
     case SortType.DEFAULT:
@@ -127,14 +130,14 @@ export default class PageController {
     renderCards(cardsListElements[0], cards.slice(0, showingCardCount));
 
     const extraCards = [
-      getExtraRatedCards(cards, SHOWING_EXTRA_CARD_COUNT),
-      getExtraCommentedCards(cards, SHOWING_EXTRA_CARD_COUNT)
+      getSortedCards(cards, `rating`, 0, SHOWING_EXTRA_CARD_COUNT),
+      getSortedCards(cards, `comments`, 0, SHOWING_EXTRA_CARD_COUNT)
     ];
 
     extraCards.forEach((array, i) => {
-      if (array) {
+      if (array.length > 0) {
         renderCards(cardsListElements[i + 1], array);
-      } else if (!array) {
+      } else {
         pageExtraListSectionElements[i].remove();
       }
     });

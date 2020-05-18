@@ -54,6 +54,28 @@ export default class PageController {
   }
 
   render(cards) {
+    const renderLoadMoreBtn = () => {
+      if (showingCardCount >= cards.length) {
+        return;
+      }
+
+      render(pageListSectionElement, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+
+      this._loadMoreBtnComponent.setClickHandler(() => {
+        const prevCardsCount = showingCardCount;
+
+        showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
+
+        cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
+          renderCard(cardsListElements[0], card);
+        });
+
+        if (showingCardCount >= cards.length) {
+          remove(this._loadMoreBtnComponent);
+        }
+      });
+    };
+
     const pageListSectionElement = this._container.getElement().querySelector(`.films-list`);
     const pageExtraListSectionElements = this._container.getElement().querySelectorAll(`.films-list--extra`);
 
@@ -91,22 +113,9 @@ export default class PageController {
       }
     });
 
-    render(pageListSectionElement, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+    renderLoadMoreBtn();
 
-    this._loadMoreBtnComponent.setClickHandler(() => {
-      const prevCardsCount = showingCardCount;
-
-      showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
-
-      cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
-        renderCard(cardsListElements[0], card);
-      });
-
-      if (showingCardCount >= cards.length) {
-        remove(this._loadMoreBtnComponent);
-      }
+    this._sortComponent.setSortTypeChangeHandler(() => {
     });
-
-    this._sortComponent.setSortTypeChangeHandler(() => {});
   }
 }

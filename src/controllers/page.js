@@ -116,6 +116,11 @@ export default class PageController {
     renderLoadMoreBtn();
 
     this._sortComponent.setSortTypeChangeHandler(() => {
+      showingCardCount = SHOWING_CARD_COUNT_ON_START;
+      cardsListElements[0].innerHTML = ``;
+      cards.slice(0, showingCardCount).forEach((card) => {
+        renderCard(cardsListElements[0], card);
+      });
     });
   }
 }

@@ -3,6 +3,7 @@ import DetailsPopupComponent from "../components/details-popup.js";
 import NoCardsComponent from "../components/no-cards.js";
 import CardsComponent from "../components/cards.js";
 import LoadMoreBtnComponent from "../components/load-more-btn.js";
+import {SortType} from "../components/sort.js";
 
 import {remove, render, RenderPosition} from "../utils/render.js";
 import {getExtraCommentedCards, getExtraRatedCards} from "../utils/common.js";
@@ -43,6 +44,27 @@ const renderCard = (cardsListElement, card) => {
   });
 
   render(cardsListElement, cardComponent, RenderPosition.BEFOREEND);
+};
+
+const getSortedCards = (cards, sortType, from, to) => {
+  let sortedCards = [];
+  const showingCards = cards.slice();
+
+  switch (sortType) {
+    case SortType.DATE:
+      sortedCards = showingCards.sort((a, b) => b.filmInfo.release.date - a.filmInfo.release.date);
+      break;
+
+    case SortType.RATING:
+      sortedCards = showingCards.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
+      break;
+
+    case SortType.DEFAULT:
+      sortedCards = showingCards;
+      break;
+  }
+
+  return sortedCards.slice(from, to);
 };
 
 export default class PageController {
@@ -115,12 +137,15 @@ export default class PageController {
 
     renderLoadMoreBtn();
 
-    this._sortComponent.setSortTypeChangeHandler(() => {
+    this._sortComponent.setSortTypeChangeHandler((sortType) => {
       showingCardCount = SHOWING_CARD_COUNT_ON_START;
+      const sortedCards = getSortedCards(cards, sortType, 0, showingCardCount);
       cardsListElements[0].innerHTML = ``;
-      cards.slice(0, showingCardCount).forEach((card) => {
+      sortedCards.forEach((card) => {
         renderCard(cardsListElements[0], card);
       });
+
+      renderLoadMoreBtn();
     });
   }
 }

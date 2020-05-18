@@ -44,70 +44,65 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent, RenderPosition.BEFOREEND);
 };
 
-const renderPage = (pageComponent, cards) => {
-  const pageSectionElement = pageComponent.getElement().querySelector(`.films-list`);
-  const pageExtraSectionElements = pageComponent.getElement().querySelectorAll(`.films-list--extra`);
-
-  if (cards.length === 0) {
-    pageSectionElement.querySelector(`h2`).remove();
-    pageExtraSectionElements[0].remove();
-    pageExtraSectionElements[1].remove();
-    render(pageSectionElement, new NoCardsComponent(), RenderPosition.BEFOREEND);
-    return;
-  }
-
-  render(pageSectionElement, new CardsComponent(), RenderPosition.BEFOREEND);
-
-  pageExtraSectionElements.forEach((element) => {
-    render(element, new CardsComponent(), RenderPosition.BEFOREEND);
-  });
-
-  const cardsListElements = pageComponent.getElement().querySelectorAll(`.films-list__container`);
-
-  let showingCardCount = SHOWING_CARD_COUNT_ON_START;
-
-  cards.slice(0, showingCardCount).forEach((card) => {
-    renderCard(cardsListElements[0], card);
-  });
-
-
-  const extraCards = [
-    getExtraRatedCards(cards, SHOWING_EXTRA_CARD_COUNT),
-    getExtraCommentedCards(cards, SHOWING_EXTRA_CARD_COUNT)
-  ];
-
-  extraCards.forEach((array, i) => {
-    if (array) {
-      array.forEach((card) => renderCard(cardsListElements[i + 1], card));
-    } else if (!array) {
-      pageExtraSectionElements[i].remove();
-    }
-  });
-
-  const loadMoreBtnComponent = new LoadMoreBtnComponent();
-  render(pageSectionElement, loadMoreBtnComponent, RenderPosition.BEFOREEND);
-
-  loadMoreBtnComponent.setClickHandler(() => {
-    const prevCardsCount = showingCardCount;
-
-    showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
-
-    cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
-      renderCard(cardsListElements[0], card);
-    });
-
-    if (showingCardCount >= cards.length) {
-      remove(loadMoreBtnComponent);
-    }
-  });
-};
-
 export default class PageController {
   constructor(container) {
     this._container = container;
+    this._noCardsComponent = new NoCardsComponent();
+    this._loadMoreBtnComponent = new LoadMoreBtnComponent();
   }
 
-  render(tasks) {
-    renderPage(this._container, tasks);
+  render(cards) {
+    const pageListSectionElement = this._container.getElement().querySelector(`.films-list`);
+    const pageExtraListSectionElements = this._container.getElement().querySelectorAll(`.films-list--extra`);
+
+    if (cards.length === 0) {
+      pageListSectionElement.querySelector(`h2`).remove();
+      pageExtraListSectionElements.forEach((element) => element.remove());
+      render(pageListSectionElement, this._noCardsComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    render(pageListSectionElement, new CardsComponent(), RenderPosition.BEFOREEND);
+
+    pageExtraListSectionElements.forEach((element) => {
+      render(element, new CardsComponent(), RenderPosition.BEFOREEND);
+    });
+
+    const cardsListElements = this._container.getElement().querySelectorAll(`.films-list__container`);
+
+    let showingCardCount = SHOWING_CARD_COUNT_ON_START;
+
+    cards.slice(0, showingCardCount).forEach((card) => {
+      renderCard(cardsListElements[0], card);
+    });
+
+    const extraCards = [
+      getExtraRatedCards(cards, SHOWING_EXTRA_CARD_COUNT),
+      getExtraCommentedCards(cards, SHOWING_EXTRA_CARD_COUNT)
+    ];
+
+    extraCards.forEach((array, i) => {
+      if (array) {
+        array.forEach((card) => renderCard(cardsListElements[i + 1], card));
+      } else if (!array) {
+        pageExtraListSectionElements[i].remove();
+      }
+    });
+
+    render(pageListSectionElement, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+
+    this._loadMoreBtnComponent.setClickHandler(() => {
+      const prevCardsCount = showingCardCount;
+
+      showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
+
+      cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
+        renderCard(cardsListElements[0], card);
+      });
+
+      if (showingCardCount >= cards.length) {
+        remove(this._loadMoreBtnComponent);
+      }
+    });
   }
 }

@@ -46,6 +46,12 @@ const renderCard = (cardsListElement, card) => {
   render(cardsListElement, cardComponent, RenderPosition.BEFOREEND);
 };
 
+const renderCards = (cardsListElement, cards) => {
+  cards.forEach((card) => {
+    renderCard(cardsListElement, card);
+  });
+};
+
 const getSortedCards = (cards, sortType, from, to) => {
   let sortedCards = [];
   const showingCards = cards.slice();
@@ -88,9 +94,9 @@ export default class PageController {
 
         showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
 
-        cards.slice(prevCardsCount, showingCardCount).forEach((card) => {
-          renderCard(cardsListElements[0], card);
-        });
+        const sortedCards = getSortedCards(cards, this._sortComponent.getSortType(), prevCardsCount, showingCardCount);
+
+        renderCards(cardsListElements[0], sortedCards);
 
         if (showingCardCount >= cards.length) {
           remove(this._loadMoreBtnComponent);
@@ -118,9 +124,7 @@ export default class PageController {
 
     let showingCardCount = SHOWING_CARD_COUNT_ON_START;
 
-    cards.slice(0, showingCardCount).forEach((card) => {
-      renderCard(cardsListElements[0], card);
-    });
+    renderCards(cardsListElements[0], cards.slice(0, showingCardCount));
 
     const extraCards = [
       getExtraRatedCards(cards, SHOWING_EXTRA_CARD_COUNT),
@@ -129,7 +133,7 @@ export default class PageController {
 
     extraCards.forEach((array, i) => {
       if (array) {
-        array.forEach((card) => renderCard(cardsListElements[i + 1], card));
+        renderCards(cardsListElements[i + 1], array);
       } else if (!array) {
         pageExtraListSectionElements[i].remove();
       }
@@ -141,9 +145,7 @@ export default class PageController {
       showingCardCount = SHOWING_CARD_COUNT_ON_START;
       const sortedCards = getSortedCards(cards, sortType, 0, showingCardCount);
       cardsListElements[0].innerHTML = ``;
-      sortedCards.forEach((card) => {
-        renderCard(cardsListElements[0], card);
-      });
+      renderCards(cardsListElements[0], sortedCards);
 
       renderLoadMoreBtn();
     });

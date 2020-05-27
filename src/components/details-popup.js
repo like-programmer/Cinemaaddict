@@ -1,6 +1,8 @@
-import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
-import {setDateFormat, setRuntimeFormat} from "../utils/common.js";
+import {RATING_NUMBER_AMOUNT, COMMENT_REACTION} from "../const.js";
+import {setRuntimeFormat} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component.js";
+
+import moment from "moment";
 
 const createBtnMarkup = (name, type, isActive = true) => {
   return (`<input type="checkbox" class="film-details__control-input visually-hidden" id="${type}" name="${type}" ${isActive ? `checked` : ``}>
@@ -29,8 +31,7 @@ const createUserRatingFormMarkup = (numberAmount, userRate) => {
 
 const createCommentMarkup = (comments) => {
   return comments.map((comment) => {
-    const date = comment.date.toISOString();
-    const formattedDate = `${date.split(`-`)[0]}/${date.split(`-`)[1]}/${date.split(`-`)[2].split(`T`)[0]} ${date.split(`T`)[1].slice(0, 5)}`;
+    const date = moment(comment.date).format(`YYYY/MM/DD HH:mm`);
 
     return (`
   <li class="film-details__comment">
@@ -41,7 +42,7 @@ const createCommentMarkup = (comments) => {
               <p class="film-details__comment-text">${comment.comment}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.author}</span>
-                <span class="film-details__comment-day">${formattedDate}</span>
+                <span class="film-details__comment-day">${date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
@@ -80,7 +81,7 @@ const createDetailsPopupTemplate = (card, options = {}) => {
   const writers = filmInfo.writers.map((writer) => ` ${writer}`);
   const actors = filmInfo.actors.map((actor) => ` ${actor}`);
 
-  const release = `${setDateFormat(filmInfo.release.date.getDate())} ${MONTH_NAMES[filmInfo.release.date.getMonth()]} ${filmInfo.release.date.getFullYear()}`;
+  const release = moment(filmInfo.release.date).format(`DD MMMM YYYY`);
 
   const releaseCountry = filmInfo.release.releaseCountry.map((country) => ` ${country}`);
 

@@ -1,7 +1,3 @@
-export const setDateFormat = (date) => {
-  return date < 10 ? `0${date}` : String(date);
-};
-
 export const getUserRank = (rankList, filters) => {
   const [filmsWatchedAmount] = filters.filter((filter) => filter.name === `history`).map((filter) => filter.count);
   let rankName = ``;

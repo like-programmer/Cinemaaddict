@@ -50,28 +50,6 @@ export default class PageController {
   }
 
   render(cards) {
-    const renderLoadMoreBtn = () => {
-      if (showingCardCount >= cards.length) {
-        return;
-      }
-
-      render(pageListSectionElement, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
-
-      this._loadMoreBtnComponent.setClickHandler(() => {
-        const prevCardsCount = showingCardCount;
-
-        showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
-
-        const sortedCards = getSortedCards(cards, this._sortComponent.getSortType(), prevCardsCount, showingCardCount);
-
-        renderCards(cardsListElements[0], sortedCards);
-
-        if (showingCardCount >= cards.length) {
-          remove(this._loadMoreBtnComponent);
-        }
-      });
-    };
-
     const pageListSectionElement = this._container.getElement().querySelector(`.films-list`);
     const pageExtraListSectionElements = this._container.getElement().querySelectorAll(`.films-list--extra`);
 
@@ -107,15 +85,40 @@ export default class PageController {
       }
     });
 
-    renderLoadMoreBtn();
+    // renderLoadMoreBtn();
+  }
 
-    this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      showingCardCount = SHOWING_CARD_COUNT_ON_START;
-      const sortedCards = getSortedCards(cards, sortType, 0, showingCardCount);
-      cardsListElements[0].innerHTML = ``;
-      renderCards(cardsListElements[0], sortedCards);
+  _renderLoadMoreBtn() {
+    if (showingCardCount >= cards.length) {
+      return;
+    }
 
-      renderLoadMoreBtn();
+    const pageListSectionElement = this._container.getElement().querySelector(`.films-list`);
+    const cardsListElement = this._container.getElement().querySelector(`.films-list__container`);
+
+    render(pageListSectionElement, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+
+    this._loadMoreBtnComponent.setClickHandler(() => {
+      const prevCardsCount = showingCardCount;
+
+      showingCardCount = showingCardCount + SHOWING_CARD_COUNT_BY_BUTTON;
+
+      const sortedCards = getSortedCards(cards, this._sortComponent.getSortType(), prevCardsCount, showingCardCount);
+
+      renderCards(cardsListElement, sortedCards);
+
+      if (showingCardCount >= cards.length) {
+        remove(this._loadMoreBtnComponent);
+      }
     });
+  }
+
+  _sortTypeChangeHandler(sortType) {
+    showingCardCount = SHOWING_CARD_COUNT_ON_START;
+    const sortedCards = getSortedCards(cards, sortType, 0, showingCardCount);
+    const cardsListElement = this._container.getElement().querySelector(`.films-list__container`);
+    cardsListElement.innerHTML = ``;
+    renderCards(cardsListElement, sortedCards);
+    renderLoadMoreBtn();
   }
 }

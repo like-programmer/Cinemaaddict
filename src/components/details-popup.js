@@ -1,6 +1,6 @@
 import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
 import {setDateFormat, setRuntimeFormat} from "../utils/common.js";
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const createBtnMarkup = (name, type, isActive = true) => {
   return (`<input type="checkbox" class="film-details__control-input visually-hidden" id="${type}" name="${type}" ${isActive ? `checked` : ``}>
@@ -213,29 +213,70 @@ const createDetailsPopupTemplate = (card) => {
 </section>`);
 };
 
-export default class DetailsPopup extends AbstractComponent {
+export default class DetailsPopup extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
+
+    this._popupCloseHandler = null;
+    this._watchlistBtnClickHandler = null;
+    this._watchedBtnClickHandler = null;
+    this._favoriteBtnClickHandler = null;
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createDetailsPopupTemplate(this._card);
   }
 
+  recoveryListeners() {
+    this.setPopupCloseHandler(this._popupCloseHandler);
+    this.setWatchlistBtnClickHandler(this._watchlistBtnClickHandler);
+    this.setWatchedBtnClickHandler(this._watchedBtnClickHandler);
+    this.setFavoriteBtnClickHandler(this._favoriteBtnClickHandler);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
   setPopupCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+
+    this._popupCloseHandler = handler;
   }
 
   setWatchlistBtnClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, handler);
+
+    this._watchlistBtnClickHandler = handler;
   }
 
   setWatchedBtnClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
+
+    this._watchedBtnClickHandler = handler;
   }
 
   setFavoriteBtnClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
+
+    this._favoriteBtnClickHandler = handler;
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.film-details__control-label--watched`).addEventListener(`click`, () => {
+      this._isRatingFormShowing = !this._isRatingFormShowing;
+      this.rerender();
+    });
+
+    element.querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
+      this._choosenEmotion = evt.target.value;
+      this.rerender();
+    });
   }
 }

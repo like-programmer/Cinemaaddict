@@ -54,7 +54,7 @@ export default class PageController {
     this._noCardsComponent = new NoCardsComponent();
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
-    this._sortComponent.setSortTypeChangeHandler(this._sortTypeChangeHandler());
+    this._sortComponent.setSortTypeChangeHandler(this._sortTypeChangeHandler);
   }
 
   render(cards) {

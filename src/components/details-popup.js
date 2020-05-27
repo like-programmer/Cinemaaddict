@@ -2,6 +2,11 @@ import {RATING_NUMBER_AMOUNT, COMMENT_REACTION, MONTH_NAMES} from "../const.js";
 import {setDateFormat, setRuntimeFormat} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
+const createBtnMarkup = (name, type, isActive = true) => {
+  return (`<input type="checkbox" class="film-details__control-input visually-hidden" id="${type}" name="${type}" ${isActive ? `checked` : ``}>
+        <label for="${type}" class="film-details__control-label film-details__control-label--${type}">${name}</label>`);
+};
+
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
     return (`
@@ -85,6 +90,10 @@ const createDetailsPopupTemplate = (card) => {
   const commentAmount = comments.length;
   const sortedComments = comments.slice().sort((first, second) => second.date - first.date);
 
+  const watchlistBtn = createBtnMarkup(`Add to watchlist`, `watchlist`, filmInfo.userDetails.watchlist);
+  const watchedtBtn = createBtnMarkup(`Already watched`, `watched`, filmInfo.userDetails.alreadyWatched);
+  const favouriteBtn = createBtnMarkup(`Add to favorites`, `favorite`, filmInfo.userDetails.favourite);
+
   const watchlistControlCheckedAttr = filmInfo.userDetails.watchlist ? `checked` : ``;
   const watchedControlCheckedAttr = filmInfo.userDetails.alreadyWatched ? `checked` : ``;
   const favouriteControlCheckedAttr = filmInfo.userDetails.favourite ? `checked` : ``;
@@ -158,14 +167,9 @@ const createDetailsPopupTemplate = (card) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${watchlistControlCheckedAttr}>
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${watchedControlCheckedAttr}>
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${favouriteControlCheckedAttr}>
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+        ${watchlistBtn}
+        ${watchedtBtn}
+        ${favouriteBtn}
       </section>
     </div>
     ${filmInfo.userDetails.alreadyWatched ? `
@@ -225,5 +229,17 @@ export default class DetailsPopup extends AbstractComponent {
 
   setCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+  }
+
+  setWatchlistBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, handler);
+  }
+
+  setWatchedBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
+  }
+
+  setFavoriteBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 }

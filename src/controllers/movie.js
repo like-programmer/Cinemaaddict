@@ -21,10 +21,18 @@ export default class MovieController {
       document.addEventListener(`keydown`, this._escKeyDownHandler);
     });
 
+    this._cardComponent.setWatchlistBtnClickHandler(() => {});
+    this._cardComponent.setWatchedBtnClickHandler(() => {});
+    this._cardComponent.setFavoriteBtnClickHandler(() => {});
+
     this._detailsPopupComponent.setCloseHandler(() => {
       this._closeDetailsPopup();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
     });
+
+    this._detailsPopupComponent.setWatchlistBtnClickHandler(() => {});
+    this._detailsPopupComponent.setWatchedBtnClickHandler(() => {});
+    this._detailsPopupComponent.setFavoriteBtnClickHandler(() => {});
 
     render(this._container, this._cardComponent, RenderPosition.BEFOREEND);
   }

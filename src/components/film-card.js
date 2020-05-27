@@ -2,6 +2,10 @@ import {CARD_DESCRIPTION_MAX_LENGTH} from "../const.js";
 import {setRuntimeFormat} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
+const createBtnMarkup = (name, type, isActive = true) => {
+  return (`<button class="film-card__controls-item button film-card__controls-item--${type} ${isActive ? `film-card__controls-item--active` : ``}">${name}</button>`);
+};
+
 const createFilmCardTemplate = (card) => {
   const {comments, filmInfo} = card;
   const commentAmount = comments.length;
@@ -18,9 +22,9 @@ const createFilmCardTemplate = (card) => {
   const genre = filmInfo.genre[0];
   const description = filmInfo.description.length > CARD_DESCRIPTION_MAX_LENGTH ? `${filmInfo.description.slice(0, CARD_DESCRIPTION_MAX_LENGTH - 1)}...` : filmInfo.description;
 
-  const watchlistControlActiveClass = filmInfo.userDetails.watchlist ? `film-card__controls-item--active` : ``;
-  const watchedControlActiveClass = filmInfo.userDetails.alreadyWatched ? `film-card__controls-item--active` : ``;
-  const favouriteControlActiveClass = filmInfo.userDetails.favourite ? `film-card__controls-item--active` : ``;
+  const watchlistBtn = createBtnMarkup(`Add to watchlist`, `add-to-watchlist`, filmInfo.userDetails.watchlist);
+  const watchedtBtn = createBtnMarkup(`Mark as watched`, `mark-as-watched`, filmInfo.userDetails.alreadyWatched);
+  const favouriteBtn = createBtnMarkup(`Mark as favourite`, `favorite`, filmInfo.userDetails.favourite);
 
   return (`<article class="film-card">
           <h3 class="film-card__title">${title}</h3>
@@ -34,9 +38,9 @@ const createFilmCardTemplate = (card) => {
           <p class="film-card__description">${description}</p>
           <a class="film-card__comments">${commentAmount} ${commentsNumeralEnding}</a>
           <form class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlistControlActiveClass}">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${watchedControlActiveClass}">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite ${favouriteControlActiveClass}">Mark as favorite</button>
+           ${watchlistBtn}
+           ${watchedtBtn}
+           ${favouriteBtn}
           </form>
         </article>`);
 };
@@ -61,5 +65,17 @@ export default class FilmCard extends AbstractComponent {
     triggerElements.forEach((element) => {
       element.addEventListener(`click`, handler);
     });
+  }
+
+  setWatchlistBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+  }
+
+  setWatchedBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+  }
+
+  setFavoriteBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
   }
 }

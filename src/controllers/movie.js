@@ -1,12 +1,19 @@
 import FilmCardComponent from "../components/film-card.js";
 import DetailsPopupComponent from "../components/details-popup.js";
 
-import {render, RenderPosition} from "../utils/render.js";
+import {render, replace, RenderPosition} from "../utils/render.js";
+
+const Mode = {
+  DEFAULT: `default`,
+  DETAILED: `detailed`
+};
 
 export default class MovieController {
-  constructor(container, dataChangeHandler) {
+  constructor(container, dataChangeHandler, viewChangeHandler) {
     this._container = container;
     this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
+    this._mode = Mode.DEFAULT;
     this._cardComponent = null;
     this._detailsPopupComponent = null;
 
@@ -14,6 +21,9 @@ export default class MovieController {
   }
 
   render(card) {
+    const oldCardComponent = this._cardComponent;
+    const oldDetailsPopupComponent = this._detailsPopupComponent;
+
     this._cardComponent = new FilmCardComponent(card);
     this._detailsPopupComponent = new DetailsPopupComponent(card);
 
@@ -72,15 +82,30 @@ export default class MovieController {
       this._dataChangeHandler(this, card, Object.assign({}, card, newCard));
     });
 
-    render(this._container, this._cardComponent, RenderPosition.BEFOREEND);
+    if (oldCardComponent && oldDetailsPopupComponent) {
+      replace(this._cardComponent, oldCardComponent);
+      replace(this._detailsPopupComponent, oldDetailsPopupComponent);
+    } else {
+      render(this._container, this._cardComponent, RenderPosition.BEFOREEND);
+    }
+  }
+
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closeDetailsPopup();
+    }
   }
 
   _openDetailsPopup() {
+    this._viewChangeHandler();
     render(document.body, this._detailsPopupComponent, RenderPosition.BEFOREEND);
+    this._mode = Mode.DETAILED;
   }
 
   _closeDetailsPopup() {
+    this._detailsPopupComponent.reset();
     this._detailsPopupComponent.getElement().remove();
+    this._mode = Mode.DEFAULT;
   }
 
   _escKeyDownHandler(evt) {

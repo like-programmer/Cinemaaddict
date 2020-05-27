@@ -254,6 +254,15 @@ export default class DetailsPopup extends AbstractSmartComponent {
     super.rerender();
   }
 
+  reset() {
+    const card = this._card;
+
+    this._isWatched = !!card.filmInfo.userDetails.alreadyWatched;
+    this._choosenEmotion = null;
+
+    this.rerender();
+  }
+
   setPopupCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
 

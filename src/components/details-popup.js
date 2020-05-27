@@ -61,8 +61,13 @@ const createEmojiReactionMarkup = (reactions) => {
   }).join(`\n`);
 };
 
-const createDetailsPopupTemplate = (card) => {
+const createUserReactionMarkup = (reaction) => {
+  return reaction ? `<img src="images/emoji/${reaction}.png" width="55" height="55" alt="emoji-${reaction}">` : ``;
+};
+
+const createDetailsPopupTemplate = (card, options = {}) => {
   const {comments, filmInfo} = card;
+  const {isWatched, choosenEmotion} = options;
 
   const title = filmInfo.title;
   const alternativeTitle = filmInfo.alternativeTitle;
@@ -91,13 +96,14 @@ const createDetailsPopupTemplate = (card) => {
   const sortedComments = comments.slice().sort((first, second) => second.date - first.date);
 
   const watchlistBtn = createBtnMarkup(`Add to watchlist`, `watchlist`, filmInfo.userDetails.watchlist);
-  const watchedtBtn = createBtnMarkup(`Already watched`, `watched`, filmInfo.userDetails.alreadyWatched);
+  const watchedtBtn = createBtnMarkup(`Already watched`, `watched`, isWatched);
   const favouriteBtn = createBtnMarkup(`Add to favorites`, `favorite`, filmInfo.userDetails.favourite);
 
   const genreMarkup = createGenresMarkup(genre);
   const userRatingFormMarkup = createUserRatingFormMarkup(RATING_NUMBER_AMOUNT, personalRating);
   const commentMarkup = createCommentMarkup(sortedComments);
   const emojiReactionMarkup = createEmojiReactionMarkup(COMMENT_REACTION);
+  const userReactionMarkup = createUserReactionMarkup(choosenEmotion);
 
   return (`<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -168,7 +174,7 @@ const createDetailsPopupTemplate = (card) => {
         ${favouriteBtn}
       </section>
     </div>
-    ${filmInfo.userDetails.alreadyWatched ? `
+    ${isWatched ? `
     <div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
@@ -199,7 +205,7 @@ const createDetailsPopupTemplate = (card) => {
         <ul class="film-details__comments-list">${commentMarkup}</ul>
 
         <div class="film-details__new-comment">
-          <div for="add-emoji" class="film-details__add-emoji-label"></div>
+          <div for="add-emoji" class="film-details__add-emoji-label">${userReactionMarkup}</div>
 
           <label class="film-details__comment-label">
             <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
@@ -218,6 +224,9 @@ export default class DetailsPopup extends AbstractSmartComponent {
     super();
     this._card = card;
 
+    this._isWatched = !!card.filmInfo.userDetails.alreadyWatched;
+    this._choosenEmotion = null;
+
     this._popupCloseHandler = null;
     this._watchlistBtnClickHandler = null;
     this._watchedBtnClickHandler = null;
@@ -227,7 +236,10 @@ export default class DetailsPopup extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createDetailsPopupTemplate(this._card);
+    return createDetailsPopupTemplate(this._card, {
+      isWatched: this._isWatched,
+      choosenEmotion: this._choosenEmotion
+    });
   }
 
   recoveryListeners() {
@@ -270,11 +282,11 @@ export default class DetailsPopup extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.film-details__control-label--watched`).addEventListener(`click`, () => {
-      this._isRatingFormShowing = !this._isRatingFormShowing;
+      this._isWatched = !this._isWatched;
       this.rerender();
     });
 
-    element.querySelector(`.film-details__emoji-list`).addEventListener(`click`, (evt) => {
+    element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       this._choosenEmotion = evt.target.value;
       this.rerender();
     });

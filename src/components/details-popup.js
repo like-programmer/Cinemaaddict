@@ -94,10 +94,6 @@ const createDetailsPopupTemplate = (card) => {
   const watchedtBtn = createBtnMarkup(`Already watched`, `watched`, filmInfo.userDetails.alreadyWatched);
   const favouriteBtn = createBtnMarkup(`Add to favorites`, `favorite`, filmInfo.userDetails.favourite);
 
-  const watchlistControlCheckedAttr = filmInfo.userDetails.watchlist ? `checked` : ``;
-  const watchedControlCheckedAttr = filmInfo.userDetails.alreadyWatched ? `checked` : ``;
-  const favouriteControlCheckedAttr = filmInfo.userDetails.favourite ? `checked` : ``;
-
   const genreMarkup = createGenresMarkup(genre);
   const userRatingFormMarkup = createUserRatingFormMarkup(RATING_NUMBER_AMOUNT, personalRating);
   const commentMarkup = createCommentMarkup(sortedComments);
@@ -227,7 +223,7 @@ export default class DetailsPopup extends AbstractComponent {
     return createDetailsPopupTemplate(this._card);
   }
 
-  setCloseHandler(handler) {
+  setPopupCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 

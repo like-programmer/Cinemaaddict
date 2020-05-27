@@ -10,9 +10,9 @@ const SHOWING_CARD_COUNT_ON_START = 5;
 const SHOWING_CARD_COUNT_BY_BUTTON = 5;
 const SHOWING_EXTRA_CARD_COUNT = 2;
 
-const renderCards = (cardsListElement, cards) => {
+const renderCards = (cardsListElement, cards, dataChangeHandler) => {
   return cards.map((card) => {
-    const movieController = new MovieController(cardsListElement);
+    const movieController = new MovieController(cardsListElement, dataChangeHandler);
     movieController.render(card);
     return movieController;
   });
@@ -53,6 +53,7 @@ export default class PageController {
     this._cardsComponent = new CardsComponent();
     this._noCardsComponent = new NoCardsComponent();
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
+    this._dataChangeHandler = this._dataChangeHandler.bind(this);
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._sortTypeChangeHandler);
   }
@@ -78,7 +79,7 @@ export default class PageController {
 
     const cardsListElements = this._container.getElement().querySelectorAll(`.films-list__container`);
 
-    const newCards = renderCards(cardsListElements[0], this._cards.slice(0, this._showingCardCount));
+    const newCards = renderCards(cardsListElements[0], this._cards.slice(0, this._showingCardCount), this._dataChangeHandler);
     this._showedMovieControllers = this._showedMovieControllers.concat(newCards);
 
     const extraCards = [
@@ -88,7 +89,7 @@ export default class PageController {
 
     extraCards.forEach((array, i) => {
       if (array.length > 0) {
-        renderCards(cardsListElements[i + 1], array);
+        renderCards(cardsListElements[i + 1], array, this._dataChangeHandler);
       } else {
         pageExtraListSectionElements[i].remove();
       }
@@ -113,7 +114,7 @@ export default class PageController {
 
       const sortedCards = getSortedCards(this._cards, this._sortComponent.getSortType(), prevCardsCount, this._showingCardCount);
 
-      const newCards = renderCards(cardsListElement, sortedCards.slice(0, this._showingCardCount));
+      const newCards = renderCards(cardsListElement, sortedCards.slice(0, this._showingCardCount), this._dataChangeHandler);
       this._showedMovieControllers = this._showedMovieControllers.concat(newCards);
 
       if (this._showingCardCount >= this._cards.length) {
@@ -122,12 +123,24 @@ export default class PageController {
     });
   }
 
+  _dataChangeHandler(cardController, oldData, newData) {
+    const index = this._cards.findIndex((card) => card === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._cards = [].concat(this._cards.slice(0, index), newData, this._cards.slice(index + 1));
+
+    cardController.render(this._cards[index]);
+  }
+
   _sortTypeChangeHandler(sortType) {
     this._showingCardCount = SHOWING_CARD_COUNT_ON_START;
     const sortedCards = getSortedCards(this._cards, sortType, 0, this._showingCardCount);
     const cardsListElement = this._cardsComponent.getElement();
     cardsListElement.innerHTML = ``;
-    const newCards = renderCards(cardsListElement, sortedCards);
+    const newCards = renderCards(cardsListElement, sortedCards, this._dataChangeHandler);
     this._showedMovieControllers = newCards;
     this._renderLoadMoreBtn();
   }

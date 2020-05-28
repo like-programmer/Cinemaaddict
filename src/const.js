@@ -20,18 +20,3 @@ export const RATING_NUMBER_AMOUNT = 9;
 export const CARD_DESCRIPTION_MAX_LENGTH = 140;
 
 export const COMMENT_REACTION = [`smile`, `sleeping`, `puke`, `angry`];
-
-export const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
